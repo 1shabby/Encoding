@@ -1,3 +1,4 @@
+# Contains all the encoding methods for ciphers
 class Encoder:
     def __init__(self):
         print("Encoder Created")
@@ -47,6 +48,8 @@ class Encoder:
 
     def Block_Chain_Encode(self):
         pass
+
+# Contains all the Decoder methods for each of the ciphers.
 
 
 class Decoder:
@@ -100,6 +103,8 @@ class Decoder:
     def Block_Chain_Decode(self):
         pass
 
+# Responsible for handling the order of ciphers in a product cipher.
+
 
 class Product:
 
@@ -125,6 +130,8 @@ class Product:
     def set_rounds(self, New_Rounds):
         self.Rounds = New_Rounds
 
+# Responsible for creating the various buffers that we may need.
+
 
 class Buffer:
     def __init__(self):
@@ -144,11 +151,3 @@ class Buffer:
 
     def Print_Buffer(self):
         print(self.buffer)
-# Transposes the input matrix and writes the transposed to output.
-
-
-def Transpose(Input, Output):
-    Output = Input
-    return Output
-
-# Getter for rounds
