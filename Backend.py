@@ -34,12 +34,12 @@ class Encoder:
             count += 1
 
         while count < len(read_buffer):
-            #print("Current char in read_buffer" + read_buffer[count])
+            # print("Current char in read_buffer" + read_buffer[count])
             self.Output += read_buffer[count]
             count += 1
         count = 0
         while count < int(shift_value):
-            #print("Current char in read_buffer" + read_buffer[count])
+            # print("Current char in read_buffer" + read_buffer[count])
             self.Output += read_buffer[count]
             count += 1
 
@@ -84,16 +84,16 @@ class Decoder:
     def Physical_Shift_Decode(self, read_buffer, shift_value):
         count = 0
         self.Output = ""
-        #print(len(read_buffer) - int(shift_value))
+        # print(len(read_buffer) - int(shift_value))
         while count < len(read_buffer) - int(shift_value):
             count += 1
         while count < len(read_buffer):
-            #print("Current char in read_buffer " + read_buffer[count])
+            # print("Current char in read_buffer " + read_buffer[count])
             self.Output += read_buffer[count]
             count += 1
         count = 0
         while count < len(read_buffer) - int(shift_value):
-            #print("Current char in read_buffer " + read_buffer[count])
+            # print("Current char in read_buffer " + read_buffer[count])
             self.Output += read_buffer[count]
             count += 1
 
@@ -112,6 +112,7 @@ class Product:
         self.Product_List = []
         self.Rounds = 1
         self.Decode = False
+        self.Dim = 3  # Dimension of the buffers.
 
     def add(self, encode_name):
         pass
@@ -135,14 +136,32 @@ class Product:
 
 class Buffer:
     def __init__(self):
-        buffer = []
-
-    def Convert_To_List(self, Input):
         self.buffer = []
+
+    def Convert_To_List(self, Input, Dim):
+        self.buffer = [[0] * Dim]
+        i = 1
+        while i < Dim:
+            self.buffer.append([0] * Dim)
+            i += 1
         count = 0
+        x = 0
+        y = 0
         for char in Input:
-            self.buffer.append(char)
-            count += 1
+            self.buffer[x][y] = char
+            if x < Dim - 1 and y < Dim - 1:
+                y += 1
+                count += 1
+            elif x < Dim - 1 and y == Dim - 1:
+                x += 1
+                y = 0
+                count += 1
+            elif x == Dim - 1 and y < Dim - 1:
+                y += 1
+                count += 1
+            elif x == Dim - 1 and y == Dim - 1:
+                print("BUFFER IS FULL!!\n")
+                break
         self.length = count
         return self.buffer
 

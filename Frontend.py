@@ -47,7 +47,7 @@ def Info_Screen():
 def Ceaser():
     print("The Ceaser Cipher is a very old encryption algorithm that relies upon shifting each characted by a given value.")
     Input = input("Please Provide a string that you would like to encrypt\n")
-    Input_List = Read_buffer.Convert_To_List(Input)
+    Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
     Shift = input(
         "Please provide an integer that you would like to shift by\n")
     Encoder.Ceaser_Encode(Input_List, Shift)
@@ -69,9 +69,9 @@ def Vigenere():
           "text.\n")
 
     Input = input("Please Provide a string that you would like to encrypt\n")
-    Input_List = Read_buffer.Convert_To_List(Input)
+    Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
     Key = input("Please enter a key that you would like to use. Ex.'purple'\n")
-    Key_list = Key_buffer.Convert_To_List(Key)
+    Key_list = Key_buffer.Convert_To_List(Key, Product_Queue.Dim)
     Encoder.Vigenere_Encode(Input_List, Key_list)
     print("The Vigenere encoded text is: " + Encoder.Output)
     feedback = input(
@@ -88,7 +88,8 @@ def Physical_Shift():
           "but instead of changing the char, we just change its position so that all of the\n"
           "chars have an offset of 'shift' places.")
     Input = input("Please Provide a string that you would like to encrypt\n")
-    Input_List = Read_buffer.Convert_To_List(Input)
+    Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
+    Read_buffer.Print_Buffer()
     Shift = input("Please set the shift value to an integer of your choice. Note that the shift\n"
                   "NEEDS to be smaller than the length of the string!\n")
     Encoder.Physical_Shift_Encode(Input_List, Shift)
