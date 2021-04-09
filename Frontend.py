@@ -89,23 +89,29 @@ def Physical_Shift():
           "chars have an offset of 'shift' places.")
     Input = input("Please Provide a string that you would like to encrypt\n")
     Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
-    Read_buffer.Print_Buffer()
+    Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
+    Read_buffer.Print_Buffer(Product_Queue.Dim)
     Shift = input("Please set the shift value to an integer of your choice. Note that the shift\n"
                   "NEEDS to be smaller than the length of the string!\n")
-    Encoder.Physical_Shift_Encode(Input_List, Shift)
-    print("The Physical Shift encoded text is: " + Encoder.Output)
+    Output_List = Encoder.Physical_Shift_Encode(
+        Input_List, Shift, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
+    write_buffer.Print_Buffer(Product_Queue.Dim)
     if Product_Queue.Decode == True:
-        Decoder.Physical_Shift_Decode(Encoder.Output, Shift)
-        print("Decoded Physical Shift encoded string: " + Decoder.Output)
+        Input_List = Output_List
+        Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
+        Output_List = Decoder.Physical_Shift_Decode(
+            Input_List, Shift, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
+        write_buffer.Print_Buffer(Product_Queue.Dim)
     else:
         print("Decoding is currently disabled. Please enable if you would like to verify results.\n")
-    input("press any key to continue... \n")
+    input("\npress any key to continue... \n")
 
 
 Encoder = Encoder()
 Decoder = Decoder()
 Key_buffer = Buffer()
 Read_buffer = Buffer()
+write_buffer = Buffer()
 Product_Queue = Product()
 
 

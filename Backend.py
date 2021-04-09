@@ -27,21 +27,74 @@ class Encoder:
                 count = 0
             self.Output += chr(ord(Read_Char) + int(ord(Key_Char)))
 
-    def Physical_Shift_Encode(self,  read_buffer, shift_value):
-        self.Output = ""
+    def Physical_Shift_Encode(self,  read_buffer, shift_value, Dim, Rounds, write_buffer):
+        RoundCount = 0
         count = 0
-        while count < int(shift_value):
-            count += 1
 
-        while count < len(read_buffer):
-            # print("Current char in read_buffer" + read_buffer[count])
-            self.Output += read_buffer[count]
-            count += 1
-        count = 0
-        while count < int(shift_value):
-            # print("Current char in read_buffer" + read_buffer[count])
-            self.Output += read_buffer[count]
-            count += 1
+        read_x = 0  # X var for read buffer
+        read_y = 0  # Y var for read buffer
+        write_x = 0  # X var for write buffer
+        write_y = 0  # Y var for write buffer
+
+        while RoundCount < Rounds:
+            while count < int(shift_value):
+                # Start traversing read_buffer.
+                if read_x < Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x < Dim - 1 and read_y == Dim - 1:
+                    read_x += 1
+                    read_y = 0
+                elif read_x == Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                count += 1
+            # Write the rest of the text from the buffer into the output buffer.
+            while count < (Dim * Dim):
+                write_buffer[write_x][write_y] = read_buffer[read_x][read_y]
+                # Adjust read buffer x and y vars.
+                if read_x < Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x < Dim - 1 and read_y == Dim - 1:
+                    read_x += 1
+                    read_y = 0
+                elif read_x == Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x == Dim - 1 and read_y == Dim - 1:
+                    read_x = 0
+                    read_y = 0
+                # Adjust write buffer x and y vars.
+                if write_x < Dim - 1 and write_y < Dim - 1:
+                    write_y += 1
+                elif write_x < Dim - 1 and write_y == Dim - 1:
+                    write_x += 1
+                    write_y = 0
+                elif write_x == Dim - 1 and write_y < Dim - 1:
+                    write_y += 1
+                count += 1
+            count = 0
+            while count < int(shift_value):
+                write_buffer[write_x][write_y] = read_buffer[read_x][read_y]
+                # Adjust read buffer x and y vars.
+                if read_x < Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x < Dim - 1 and read_y == Dim - 1:
+                    read_x += 1
+                    read_y = 0
+                elif read_x == Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x == Dim - 1 and read_y == Dim - 1:
+                    read_x = 0
+                    read_y = 0
+                # Adjust write buffer x and y vars.
+                if write_x < Dim - 1 and write_y < Dim - 1:
+                    write_y += 1
+                elif write_x < Dim - 1 and write_y == Dim - 1:
+                    write_x += 1
+                    write_y = 0
+                elif write_x == Dim - 1 and write_y < Dim - 1:
+                    write_y += 1
+                count += 1
+            RoundCount += 1
+        return write_buffer
 
     def Columnar_Encode(self):
         return 0
@@ -81,21 +134,78 @@ class Decoder:
                 count = 0
             self.Output += chr(ord(Read_Char) - int(ord(Key_Char)))
 
-    def Physical_Shift_Decode(self, read_buffer, shift_value):
+    def Physical_Shift_Decode(self, read_buffer, shift_value, Dim, Rounds, write_buffer):
+        RoundCount = 0
         count = 0
-        self.Output = ""
-        # print(len(read_buffer) - int(shift_value))
-        while count < len(read_buffer) - int(shift_value):
-            count += 1
-        while count < len(read_buffer):
-            # print("Current char in read_buffer " + read_buffer[count])
-            self.Output += read_buffer[count]
-            count += 1
-        count = 0
-        while count < len(read_buffer) - int(shift_value):
-            # print("Current char in read_buffer " + read_buffer[count])
-            self.Output += read_buffer[count]
-            count += 1
+
+        read_x = 0  # X var for read buffer
+        read_y = 0  # Y var for read buffer
+        write_x = 0  # X var for write buffer
+        write_y = 0  # Y var for write buffer
+
+        # self.Output = "" #Depricated
+        # While we are not on the last round.
+        while RoundCount < Rounds:
+            # Shift to the new start.
+            while count < ((Dim * Dim) - int(shift_value)):
+                # Start traversing read_buffer.
+                if read_x < Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x < Dim - 1 and read_y == Dim - 1:
+                    read_x += 1
+                    read_y = 0
+                elif read_x == Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                count += 1
+            # Write the rest of the text from the buffer into the output buffer.
+            while count < (Dim * Dim):
+                # Copy read buffer element into write buffer at the correct place.
+                write_buffer[write_x][write_y] = read_buffer[read_x][read_y]
+                # Adjust read buffer x and y vars.
+                if read_x < Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x < Dim - 1 and read_y == Dim - 1:
+                    read_x += 1
+                    read_y = 0
+                elif read_x == Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x == Dim - 1 and read_y == Dim - 1:
+                    read_x = 0
+                    read_y = 0
+                # Adjust write buffer x and y vars.
+                if write_x < Dim - 1 and write_y < Dim - 1:
+                    write_y += 1
+                elif write_x < Dim - 1 and write_y == Dim - 1:
+                    write_x += 1
+                    write_y = 0
+                elif write_x == Dim - 1 and write_y < Dim - 1:
+                    write_y += 1
+                count += 1
+            count = 0
+            while count < ((Dim * Dim) - int(shift_value)):
+                write_buffer[write_x][write_y] = read_buffer[read_x][read_y]
+                # Adjust read buffer x and y vars.
+                if read_x < Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x < Dim - 1 and read_y == Dim - 1:
+                    read_x += 1
+                    read_y = 0
+                elif read_x == Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x == Dim - 1 and read_y == Dim - 1:
+                    read_x = 0
+                    read_y = 0
+                # Adjust write buffer x and y vars.
+                if write_x < Dim - 1 and write_y < Dim - 1:
+                    write_y += 1
+                elif write_x < Dim - 1 and write_y == Dim - 1:
+                    write_x += 1
+                    write_y = 0
+                elif write_x == Dim - 1 and write_y < Dim - 1:
+                    write_y += 1
+                count += 1
+            RoundCount += 1
+        return write_buffer
 
     def Columnar_Decode(self):
         return 0
@@ -111,8 +221,8 @@ class Product:
     def __init__(self):
         self.Product_List = []
         self.Rounds = 1
-        self.Decode = False
-        self.Dim = 3  # Dimension of the buffers.
+        self.Decode = True
+        self.Dim = 2  # Dimension of the buffers.
 
     def add(self, encode_name):
         pass
@@ -141,6 +251,7 @@ class Buffer:
     def Convert_To_List(self, Input, Dim):
         self.buffer = [[0] * Dim]
         i = 1
+        # Create a (Dim x Dim) matrix.
         while i < Dim:
             self.buffer.append([0] * Dim)
             i += 1
@@ -159,14 +270,26 @@ class Buffer:
             elif x == Dim - 1 and y < Dim - 1:
                 y += 1
                 count += 1
-            elif x == Dim - 1 and y == Dim - 1:
-                print("BUFFER IS FULL!!\n")
-                break
         self.length = count
         return self.buffer
 
     def Get_Element(self, Index):
         return self.buffer[Index]
 
-    def Print_Buffer(self):
-        print(self.buffer)
+    def Print_Buffer(self, Dim):
+        count = 0
+        Output = ""
+        x = 0
+        y = 0
+        while count < Dim * Dim:
+            char = self.buffer[x][y]
+            Output += char
+            if x < Dim - 1 and y < Dim - 1:
+                y += 1
+            elif x < Dim - 1 and y == Dim - 1:
+                x += 1
+                y = 0
+            elif x == Dim - 1 and y < Dim - 1:
+                y += 1
+            count += 1
+        print("Output: " + Output)
