@@ -36,7 +36,7 @@ class Encoder:
         write_x = 0  # X var for write buffer
         write_y = 0  # Y var for write buffer
 
-        while RoundCount < Rounds:
+        while RoundCount < int(Rounds):
             while count < int(shift_value):
                 # Start traversing read_buffer.
                 if read_x < Dim - 1 and read_y < Dim - 1:
@@ -145,7 +145,7 @@ class Decoder:
 
         # self.Output = "" #Depricated
         # While we are not on the last round.
-        while RoundCount < Rounds:
+        while RoundCount < int(Rounds):
             # Shift to the new start.
             while count < ((Dim * Dim) - int(shift_value)):
                 # Start traversing read_buffer.
@@ -240,6 +240,9 @@ class Product:
 
     def set_rounds(self, New_Rounds):
         self.Rounds = New_Rounds
+
+    def set_dim(self, New_Dim):
+        self.Dim = New_Dim
 
 # Responsible for creating the various buffers that we may need.
 

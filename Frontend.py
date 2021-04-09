@@ -12,6 +12,7 @@ def Options():
     print("2: Ceaser")
     print("3: Vigenere")
     print("4: Physical shift")
+    print("c: Config Settings")
     print("q: Quit\n")
 
 
@@ -32,6 +33,10 @@ def Options_Handling():
             Options_Handling()
         elif feedback == '4':
             Physical_Shift()
+            Options()
+            Options_Handling()
+        elif feedback.upper() == 'C':
+            Config()
             Options()
             Options_Handling()
         elif feedback.upper() == 'Q':
@@ -105,6 +110,29 @@ def Physical_Shift():
     else:
         print("Decoding is currently disabled. Please enable if you would like to verify results.\n")
     input("\npress any key to continue... \n")
+
+
+def Config():
+    check = True
+    while check == True:
+        print("Config")
+        print("Buffer Dimension: " + str(Product_Queue.Dim))
+        print("Rounds: " + str(Product_Queue.Rounds))
+        print("\nD: Change Dim")
+        print("R: Change rounds")
+        print("B: Back\n")
+        feedback = input(
+            "Please enter a command from above to modify the settings, or exit the menu.")
+        if feedback.upper() == 'D':
+            feedback = input(
+                "Please enter a new dimension for the buffers.\n")
+            Product_Queue.set_dim(feedback)
+        elif feedback.upper() == 'R':
+            feedback = input(
+                "Please enter an integer rounds that you would like to have a cipher run.\n")
+            Product_Queue.set_rounds(feedback)
+        elif feedback.upper() == 'B':
+            check = False
 
 
 Encoder = Encoder()
