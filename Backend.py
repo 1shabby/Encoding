@@ -28,6 +28,7 @@ class Encoder:
             self.Output += chr(ord(Read_Char) + int(ord(Key_Char)))
 
     def Physical_Shift_Encode(self,  read_buffer, shift_value, Dim, Rounds, write_buffer):
+        Dim = int(Dim)
         RoundCount = 0
         count = 0
 
@@ -94,8 +95,8 @@ class Encoder:
                     write_y += 1
                 count += 1
             RoundCount += 1
-            Buffers.Print_Buffer(Dim, write_buffer)
             print("Round: " + str(RoundCount))
+            Buffers.Print_Buffer(Dim, write_buffer)
             if RoundCount < int(Rounds):
                 read_buffer = write_buffer
                 write_buffer = self.Empty_Buffer(Dim)
@@ -113,6 +114,7 @@ class Encoder:
         pass
 
     def Empty_Buffer(self, Dim):
+        Dim = int(Dim)
         buffer = [[0] * Dim]
         i = 1
         # Create a (Dim x Dim) matrix.
@@ -154,6 +156,7 @@ class Decoder:
             self.Output += chr(ord(Read_Char) - int(ord(Key_Char)))
 
     def Physical_Shift_Decode(self, read_buffer, shift_value, Dim, Rounds, write_buffer):
+        Dim = int(Dim)
         RoundCount = 0
         count = 0
 
@@ -224,8 +227,8 @@ class Decoder:
                     write_y += 1
                 count += 1
             RoundCount += 1
-            Buffers.Print_Buffer(Dim, write_buffer)
             print("Round: " + str(RoundCount))
+            Buffers.Print_Buffer(Dim, write_buffer)
             if RoundCount < int(Rounds):
                 read_buffer = write_buffer
                 read_x = 0
@@ -280,25 +283,25 @@ class Buffer:
         self.buffer = []
 
     def Convert_To_List(self, Input, Dim):
-        self.buffer = [[0] * Dim]
+        self.buffer = [[0] * int(Dim)]
         i = 1
         # Create a (Dim x Dim) matrix.
-        while i < Dim:
-            self.buffer.append([0] * Dim)
+        while i < int(Dim):
+            self.buffer.append([0] * int(Dim))
             i += 1
         count = 0
         x = 0
         y = 0
         for char in Input:
             self.buffer[x][y] = char
-            if x < Dim - 1 and y < Dim - 1:
+            if x < int(Dim) - 1 and y < int(Dim) - 1:
                 y += 1
                 count += 1
-            elif x < Dim - 1 and y == Dim - 1:
+            elif x < int(Dim) - 1 and y == int(Dim) - 1:
                 x += 1
                 y = 0
                 count += 1
-            elif x == Dim - 1 and y < Dim - 1:
+            elif x == int(Dim) - 1 and y < int(Dim) - 1:
                 y += 1
                 count += 1
         self.length = count
@@ -308,13 +311,14 @@ class Buffer:
         return self.buffer[Index]
 
     def Print_Buffer(self, Dim, buffer):
+        Dim = int(Dim)
         count = 0
         Output = ""
         x = 0
         y = 0
         while count < Dim * Dim:
             char = buffer[x][y]
-            Output += char
+            Output += str(char)
             if x < Dim - 1 and y < Dim - 1:
                 y += 1
             elif x < Dim - 1 and y == Dim - 1:
