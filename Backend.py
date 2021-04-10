@@ -94,6 +94,16 @@ class Encoder:
                     write_y += 1
                 count += 1
             RoundCount += 1
+            Buffers.Print_Buffer(Dim, write_buffer)
+            print("Round: " + str(RoundCount))
+            if RoundCount < int(Rounds):
+                read_buffer = write_buffer
+                write_buffer = self.Empty_Buffer(Dim)
+                read_x = 0
+                read_y = 0
+                write_x = 0
+                write_y = 0
+                count = 0
         return write_buffer
 
     def Columnar_Encode(self):
@@ -101,6 +111,15 @@ class Encoder:
 
     def Block_Chain_Encode(self):
         pass
+
+    def Empty_Buffer(self, Dim):
+        buffer = [[0] * Dim]
+        i = 1
+        # Create a (Dim x Dim) matrix.
+        while i < Dim:
+            buffer.append([0] * Dim)
+            i += 1
+        return buffer
 
 # Contains all the Decoder methods for each of the ciphers.
 
@@ -205,6 +224,15 @@ class Decoder:
                     write_y += 1
                 count += 1
             RoundCount += 1
+            Buffers.Print_Buffer(Dim, write_buffer)
+            print("Round: " + str(RoundCount))
+            if RoundCount < int(Rounds):
+                read_buffer = write_buffer
+                read_x = 0
+                read_y = 0
+                write_x = 0
+                write_y = 0
+                count = 0
         return write_buffer
 
     def Columnar_Decode(self):
@@ -221,7 +249,7 @@ class Product:
     def __init__(self):
         self.Product_List = []
         self.Rounds = 1
-        self.Decode = True
+        self.Decode = False
         self.Dim = 2  # Dimension of the buffers.
 
     def add(self, encode_name):
@@ -279,13 +307,13 @@ class Buffer:
     def Get_Element(self, Index):
         return self.buffer[Index]
 
-    def Print_Buffer(self, Dim):
+    def Print_Buffer(self, Dim, buffer):
         count = 0
         Output = ""
         x = 0
         y = 0
         while count < Dim * Dim:
-            char = self.buffer[x][y]
+            char = buffer[x][y]
             Output += char
             if x < Dim - 1 and y < Dim - 1:
                 y += 1
@@ -296,3 +324,6 @@ class Buffer:
                 y += 1
             count += 1
         print("Output: " + Output)
+
+
+Buffers = Buffer()

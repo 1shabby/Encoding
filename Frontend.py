@@ -95,18 +95,18 @@ def Physical_Shift():
     Input = input("Please Provide a string that you would like to encrypt\n")
     Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
     Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
-    Read_buffer.Print_Buffer(Product_Queue.Dim)
+    Read_buffer.Print_Buffer(Product_Queue.Dim, Input_List)
     Shift = input("Please set the shift value to an integer of your choice. Note that the shift\n"
                   "NEEDS to be smaller than the length of the string!\n")
     Output_List = Encoder.Physical_Shift_Encode(
         Input_List, Shift, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
-    write_buffer.Print_Buffer(Product_Queue.Dim)
+    write_buffer.Print_Buffer(Product_Queue.Dim, Output_List)
     if Product_Queue.Decode == True:
         Input_List = Output_List
         Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
         Output_List = Decoder.Physical_Shift_Decode(
             Input_List, Shift, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
-        write_buffer.Print_Buffer(Product_Queue.Dim)
+        write_buffer.Print_Buffer(Product_Queue.Dim, Output_List)
     else:
         print("Decoding is currently disabled. Please enable if you would like to verify results.\n")
     input("\npress any key to continue... \n")
