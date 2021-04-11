@@ -53,16 +53,21 @@ def Ceaser():
     print("The Ceaser Cipher is a very old encryption algorithm that relies upon shifting each characted by a given value.")
     Input = input("Please Provide a string that you would like to encrypt\n")
     Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
+    Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
     Shift = input(
         "Please provide an integer that you would like to shift by\n")
-    Encoder.Ceaser_Encode(Input_List, Shift)
+    Encoder.Ceaser_Encode(Input_List, Shift, Product_Queue.Dim,
+                          Product_Queue.Rounds, Output_List)
     print("Ceaser encoded string: " + Encoder.Output)
+    write_buffer.Print_Buffer(Product_Queue.Dim, Output_List)
 
-    feedback = input(
-        "\nWould you like to decrypt the encoded string to show that it worked properly?\n")
-    if feedback.upper() == 'Y':
-        Decoder.Ceaser_Decode(Encoder.Output, Shift)
+    if Product_Queue.Decode == True:
+        Decoder.Ceaser_Decode(
+            Output_List, Shift, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
         print("Decoded Ceaser encoded string: " + Decoder.Output)
+        write_buffer.Print_Buffer(Product_Queue.Dim, Output_List)
+    else:
+        print("Please enable decoding to view the decoded version to verify results.")
 
     input("press any key to continue... \n")
 
@@ -77,12 +82,12 @@ def Vigenere():
     Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
     Key = input("Please enter a key that you would like to use. Ex.'purple'\n")
     Key_list = Key_buffer.Convert_To_List(Key, Product_Queue.Dim)
-    Encoder.Vigenere_Encode(Input_List, Key_list)
+    #Encoder.Vigenere_Encode(Input_List, Key_list)
     print("The Vigenere encoded text is: " + Encoder.Output)
     feedback = input(
         "Would you like to decrypt the encoded string to show that it worked properly?\n")
     if feedback.upper() == 'Y':
-        Decoder.Vigenere_Decode(Encoder.Output, Key_list)
+        #Decoder.Vigenere_Decode(Encoder.Output, Key_list)
         print("Decoded Ceaser encoded string: " + Decoder.Output)
     input("press any key to continue... \n")
 
@@ -109,7 +114,7 @@ def Physical_Shift():
         write_buffer.Print_Buffer(Product_Queue.Dim, Output_List)
     else:
         print("Decoding is currently disabled. Please enable if you would like to verify results.\n")
-    input("\npress any key to continue... \n")
+    input("\npress enter to continue... \n")
 
 
 def Config():

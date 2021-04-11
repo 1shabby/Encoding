@@ -11,11 +11,38 @@ class Encoder:
     def Pad_Input(self):
         return 0
 
-    def Ceaser_Encode(self, read_buffer, Key_Offset):
-        for char in read_buffer:
-            self.Output += chr(ord(char) + int(Key_Offset))
+    def Ceaser_Encode(self, read_buffer, Key_Offset, Dim, Rounds, write_buffer):
+        Dim = int(Dim)
+        RoundCount = 0
+        count = 0
 
-    def Vigenere_Encode(self, read_buffer, Key_buffer):
+        x = 0
+        y = 0
+
+        while RoundCount < int(Rounds):
+            while count < Dim * Dim:
+                write_buffer[x][y] = chr(
+                    ord(read_buffer[x][y]) + int(Key_Offset))
+                if x < Dim - 1 and y < Dim - 1:
+                    y += 1
+                elif x < Dim - 1 and y == Dim - 1:
+                    x += 1
+                    y = 0
+                elif x == Dim - 1 and y < Dim - 1:
+                    y += 1
+                count += 1
+            RoundCount += 1
+            print("Round: " + str(RoundCount))
+            Buffers.Print_Buffer(Dim, write_buffer)
+            if RoundCount < int(Rounds):
+                read_buffer = write_buffer
+                write_buffer = self.Empty_Buffer(Dim)
+                x = 0
+                y = 0
+                count = 0
+        return write_buffer
+
+    def Vigenere_Encode(self, read_buffer, Key_buffer, Dim, Rounds, write_buffer):
         count = 0
         self.Output = ""
         for Read_Char in read_buffer:
@@ -139,11 +166,38 @@ class Decoder:
         padded_bytes = 0
         return padded_bytes
 
-    def Ceaser_Decode(self, read_buffer, Key_Offset):
-        for char in read_buffer:
-            self.Output += chr(ord(char) - int(Key_Offset))
+    def Ceaser_Decode(self, read_buffer, Key_Offset, Dim, Rounds, write_buffer):
+        Dim = int(Dim)
+        RoundCount = 0
+        count = 0
 
-    def Vigenere_Decode(self, read_buffer, Key_buffer):
+        x = 0
+        y = 0
+
+        while RoundCount < int(Rounds):
+            while count < Dim * Dim:
+                write_buffer[x][y] = chr(
+                    ord(read_buffer[x][y]) - int(Key_Offset))
+                if x < Dim - 1 and y < Dim - 1:
+                    y += 1
+                elif x < Dim - 1 and y == Dim - 1:
+                    x += 1
+                    y = 0
+                elif x == Dim - 1 and y < Dim - 1:
+                    y += 1
+                count += 1
+            RoundCount += 1
+            print("Round: " + str(RoundCount))
+            Buffers.Print_Buffer(Dim, write_buffer)
+            if RoundCount < int(Rounds):
+                read_buffer = write_buffer
+                #write_buffer = self.Empty_Buffer(Dim)
+                x = 0
+                y = 0
+                count = 0
+        return write_buffer
+
+    def Vigenere_Decode(self, read_buffer, Key_buffer, Dim, Rounds, write_buffer):
         count = 0
         self.Output = ""
         for Read_Char in read_buffer:
@@ -252,7 +306,7 @@ class Product:
     def __init__(self):
         self.Product_List = []
         self.Rounds = 1
-        self.Decode = False
+        self.Decode = True
         self.Dim = 2  # Dimension of the buffers.
 
     def add(self, encode_name):
