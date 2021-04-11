@@ -80,14 +80,18 @@ def Vigenere():
 
     Input = input("Please Provide a string that you would like to encrypt\n")
     Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
+    Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
     Key = input("Please enter a key that you would like to use. Ex.'purple'\n")
+    key_length = len(Key)
     Key_list = Key_buffer.Convert_To_List(Key, Product_Queue.Dim)
-    #Encoder.Vigenere_Encode(Input_List, Key_list)
+    Encoder.Vigenere_Encode(
+        Input_List, Key_list, Product_Queue.Dim, Product_Queue.Rounds, Output_List, key_length)
     print("The Vigenere encoded text is: " + Encoder.Output)
     feedback = input(
         "Would you like to decrypt the encoded string to show that it worked properly?\n")
-    if feedback.upper() == 'Y':
-        #Decoder.Vigenere_Decode(Encoder.Output, Key_list)
+    if Product_Queue.Decode == True:
+        Decoder.Vigenere_Decode(
+            Input_List, Key_list, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
         print("Decoded Ceaser encoded string: " + Decoder.Output)
     input("press any key to continue... \n")
 

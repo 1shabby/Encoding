@@ -42,17 +42,56 @@ class Encoder:
                 count = 0
         return write_buffer
 
-    def Vigenere_Encode(self, read_buffer, Key_buffer, Dim, Rounds, write_buffer):
+    def Vigenere_Encode(self, read_buffer, Key_buffer, Dim, Rounds, write_buffer, key_length):
+        Dim = int(Dim)
+        RoundCount = 0
         count = 0
-        self.Output = ""
-        for Read_Char in read_buffer:
-            # print("Readloop: Char = " + Read_Char) #Debugging print statement
-            Key_Char = Key_buffer[count]
-            count += 1
-            # print("Key_Char = : " + Key_Char) #Debugging print statment
-            if count == len(Key_buffer):
+        key_count = 0
+
+        read_x = 0
+        read_y = 0
+        key_x = 0
+        key_y = 0
+
+        while RoundCount < int(Rounds):
+            while count < Dim * Dim:
+                write_buffer[read_x][read_y] = ord(
+                    read_buffer[read_x][read_y]) + ord(Key_buffer[key_x][key_y])
+                write_buffer[read_x][read_y] = chr(
+                    write_buffer[read_x][read_y])
+                if read_x < Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                elif read_x < Dim - 1 and read_y == Dim - 1:
+                    read_x += 1
+                    read_y = 0
+                elif read_x == Dim - 1 and read_y < Dim - 1:
+                    read_y += 1
+                count += 1
+                if key_count < key_length:
+                    if key_x < Dim - 1 and key_y < Dim - 1:
+                        key_y += 1
+                    elif key_x < Dim - 1 and key_y == Dim - 1:
+                        key_x += 1
+                        key_y = 0
+                    elif key_x == Dim - 1 and key_y < Dim - 1:
+                        key_y += 1
+                    elif key_x == Dim - 1 and key_y == Dim - 1:
+                        key_x = 0
+                        key_y = 0
+                else:
+                    key_x = 0
+                    key_y = 0
+                key_count += 1
+            RoundCount += 1
+            print("Round: " + str(RoundCount))
+            Buffers.Print_Buffer(Dim, write_buffer)
+            if RoundCount < int(Rounds):
+                read_buffer = write_buffer
+                write_buffer = self.Empty_Buffer(Dim)
+                x = 0
+                y = 0
                 count = 0
-            self.Output += chr(ord(Read_Char) + int(ord(Key_Char)))
+        return write_buffer
 
     def Physical_Shift_Encode(self,  read_buffer, shift_value, Dim, Rounds, write_buffer):
         Dim = int(Dim)
@@ -191,23 +230,40 @@ class Decoder:
             Buffers.Print_Buffer(Dim, write_buffer)
             if RoundCount < int(Rounds):
                 read_buffer = write_buffer
-                #write_buffer = self.Empty_Buffer(Dim)
                 x = 0
                 y = 0
                 count = 0
         return write_buffer
 
     def Vigenere_Decode(self, read_buffer, Key_buffer, Dim, Rounds, write_buffer):
+        Dim = int(Dim)
+        RoundCount = 0
         count = 0
-        self.Output = ""
-        for Read_Char in read_buffer:
-            # print("Readloop: Char = " + Read_Char) #Debugging print statement
-            Key_Char = Key_buffer[count]
-            count += 1
-            # print("Key_Char = : " + Key_Char)#Debugging print statement
-            if count == len(Key_buffer):
+
+        x = 0
+        y = 0
+        while RoundCount < int(Rounds):
+            while count < Dim * Dim:
+                write_buffer[x][y] = ord(
+                    read_buffer[x][y]) - ord(Key_buffer[x][y])
+                write_buffer[x][y] = chr(write_buffer[x][y])
+                if x < Dim - 1 and y < Dim - 1:
+                    y += 1
+                elif x < Dim - 1 and y == Dim - 1:
+                    x += 1
+                    y = 0
+                elif x == Dim - 1 and y < Dim - 1:
+                    y += 1
+                count += 1
+            RoundCount += 1
+            print("Round: " + str(RoundCount))
+            Buffers.Print_Buffer(Dim, write_buffer)
+            if RoundCount < int(Rounds):
+                read_buffer = write_buffer
+                x = 0
+                y = 0
                 count = 0
-            self.Output += chr(ord(Read_Char) - int(ord(Key_Char)))
+        return write_buffer
 
     def Physical_Shift_Decode(self, read_buffer, shift_value, Dim, Rounds, write_buffer):
         Dim = int(Dim)
