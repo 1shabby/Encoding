@@ -1,19 +1,13 @@
 # Contains all the encoding methods for ciphers
 class Encoder:
     def __init__(self):
-        print("Encoder Created")
-        self.Output = ""
-    # Gets the input to be encoded from a specified file.
-
-    def Get_Input(self):
-        return 0
+        self.Buffer = []
 
     def Pad_Input(self):
         return 0
 
-    def Ceaser_Encode(self, read_buffer, Key_Offset, Dim, Rounds, write_buffer):
+    def Ceaser_Encode(self, read_buffer, write_buffer, Key_Offset, Dim, Rounds, round_Count):
         Dim = int(Dim)
-        RoundCount = 0
         count = 0
 
         x = 0
@@ -32,19 +26,18 @@ class Encoder:
                     y += 1
                 count += 1
             RoundCount += 1
-            print("Round: " + str(RoundCount))
-            Buffers.Print_Buffer(Dim, write_buffer)
+            #print("Round: " + str(RoundCount))
+            #Buffers.Print_Buffer(Dim, write_buffer)
             if RoundCount < int(Rounds):
                 read_buffer = write_buffer
-                write_buffer = self.Empty_Buffer(Dim)
+                write_buffer = Empty_Buffer(Dim)
                 x = 0
                 y = 0
                 count = 0
-        return write_buffer
+        self.Buffer = write_buffer
 
-    def Vigenere_Encode(self, read_buffer, Key_buffer, Dim, Rounds, write_buffer, key_length):
+    def Vigenere_Encode(self, read_buffer, Key_buffer, write_buffer, key_length, Dim, Rounds, round_Count):
         Dim = int(Dim)
-        RoundCount = 0
         count = 0
         key_count = 0
 
@@ -83,19 +76,18 @@ class Encoder:
                     key_y = 0
                 key_count += 1
             RoundCount += 1
-            print("Round: " + str(RoundCount))
-            Buffers.Print_Buffer(Dim, write_buffer)
+            #print("Round: " + str(RoundCount))
+            #Buffers.Print_Buffer(Dim, write_buffer)
             if RoundCount < int(Rounds):
                 read_buffer = write_buffer
-                write_buffer = self.Empty_Buffer(Dim)
+                write_buffer = Empty_Buffer(Dim)
                 x = 0
                 y = 0
                 count = 0
-        return write_buffer
+        self.Buffer = write_buffer
 
-    def Physical_Shift_Encode(self,  read_buffer, shift_value, Dim, Rounds, write_buffer):
+    def Physical_Shift_Encode(self,  read_buffer, write_buffer, Dim, shift_value, Rounds, round_Count):
         Dim = int(Dim)
-        RoundCount = 0
         count = 0
 
         read_x = 0  # X var for read buffer
@@ -161,17 +153,17 @@ class Encoder:
                     write_y += 1
                 count += 1
             RoundCount += 1
-            print("Round: " + str(RoundCount))
-            Buffers.Print_Buffer(Dim, write_buffer)
+            #print("Round: " + str(RoundCount))
+            #Buffers.Print_Buffer(Dim, write_buffer)
             if RoundCount < int(Rounds):
                 read_buffer = write_buffer
-                write_buffer = self.Empty_Buffer(Dim)
+                write_buffer = Empty_Buffer(Dim)
                 read_x = 0
                 read_y = 0
                 write_x = 0
                 write_y = 0
                 count = 0
-        return write_buffer
+        self.Buffer = write_buffer
 
     def Columnar_Encode(self):
         return 0
@@ -179,23 +171,12 @@ class Encoder:
     def Block_Chain_Encode(self):
         pass
 
-    def Empty_Buffer(self, Dim):
-        Dim = int(Dim)
-        buffer = [[0] * Dim]
-        i = 1
-        # Create a (Dim x Dim) matrix.
-        while i < Dim:
-            buffer.append([0] * Dim)
-            i += 1
-        return buffer
-
 # Contains all the Decoder methods for each of the ciphers.
 
 
 class Decoder:
     def __init__(self):
-        print("Decoder Created\n")
-        self.Output = ""
+        self.Buffer = []
     # Writes the encoded output to a specified file.
 
     def Write_Output(self):
@@ -205,9 +186,8 @@ class Decoder:
         padded_bytes = 0
         return padded_bytes
 
-    def Ceaser_Decode(self, read_buffer, Key_Offset, Dim, Rounds, write_buffer):
+    def Ceaser_Decode(self, read_buffer, write_buffer, Dim, Key_Offset, Rounds, round_Count):
         Dim = int(Dim)
-        RoundCount = 0
         count = 0
 
         x = 0
@@ -226,8 +206,8 @@ class Decoder:
                     y += 1
                 count += 1
             RoundCount += 1
-            print("Round: " + str(RoundCount))
-            Buffers.Print_Buffer(Dim, write_buffer)
+            # print("Round: " + str(RoundCount))
+            # Buffers.Print_Buffer(Dim, write_buffer)
             if RoundCount < int(Rounds):
                 read_buffer = write_buffer
                 x = 0
@@ -235,9 +215,8 @@ class Decoder:
                 count = 0
         return write_buffer
 
-    def Vigenere_Decode(self, read_buffer, Key_buffer, Dim, Rounds, write_buffer):
+    def Vigenere_Decode(self, read_buffer, Key_buffer, write_buffer, Dim, Rounds, round_Count):
         Dim = int(Dim)
-        RoundCount = 0
         count = 0
 
         x = 0
@@ -256,8 +235,8 @@ class Decoder:
                     y += 1
                 count += 1
             RoundCount += 1
-            print("Round: " + str(RoundCount))
-            Buffers.Print_Buffer(Dim, write_buffer)
+            # print("Round: " + str(RoundCount))
+            # Buffers.Print_Buffer(Dim, write_buffer)
             if RoundCount < int(Rounds):
                 read_buffer = write_buffer
                 x = 0
@@ -265,9 +244,8 @@ class Decoder:
                 count = 0
         return write_buffer
 
-    def Physical_Shift_Decode(self, read_buffer, shift_value, Dim, Rounds, write_buffer):
+    def Physical_Shift_Decode(self, read_buffer, shift_value, Dim, Rounds, write_buffer, round_Count):
         Dim = int(Dim)
-        RoundCount = 0
         count = 0
 
         read_x = 0  # X var for read buffer
@@ -362,6 +340,7 @@ class Product:
     def __init__(self):
         self.Product_List = []
         self.Rounds = 1
+        self.Round_Count = 0
         self.Decode = True
         self.Dim = 2  # Dimension of the buffers.
 
@@ -391,6 +370,7 @@ class Product:
 class Buffer:
     def __init__(self):
         self.buffer = []
+        self.input_length = 0
 
     def Convert_To_List(self, Input, Dim):
         self.buffer = [[0] * int(Dim)]
@@ -406,28 +386,25 @@ class Buffer:
             self.buffer[x][y] = char
             if x < int(Dim) - 1 and y < int(Dim) - 1:
                 y += 1
-                count += 1
             elif x < int(Dim) - 1 and y == int(Dim) - 1:
                 x += 1
                 y = 0
-                count += 1
             elif x == int(Dim) - 1 and y < int(Dim) - 1:
                 y += 1
-                count += 1
-        self.length = count
-        return self.buffer
+            count += 1
+            self.input_length += 1
 
     def Get_Element(self, Index):
         return self.buffer[Index]
 
-    def Print_Buffer(self, Dim, buffer):
+    def Print_Buffer(self, Dim):
         Dim = int(Dim)
         count = 0
         Output = ""
         x = 0
         y = 0
         while count < Dim * Dim:
-            char = buffer[x][y]
+            char = self.buffer[x][y]
             Output += str(char)
             if x < Dim - 1 and y < Dim - 1:
                 y += 1
@@ -440,4 +417,14 @@ class Buffer:
         print("Output: " + Output)
 
 
-Buffers = Buffer()
+def Empty_Buffer(Dim):
+    buffer = []
+    i = 1
+    # Create a (Dim x Dim) matrix.
+    while i < int(Dim):
+        self.buffer.append([0] * int(Dim))
+        i += 1
+        count = 0
+        x = 0
+        y = 0
+    return buffer

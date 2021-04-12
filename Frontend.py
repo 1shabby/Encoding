@@ -149,6 +149,7 @@ Decoder = Decoder()
 Key_buffer = Buffer()
 Read_buffer = Buffer()
 write_buffer = Buffer()
+Empty_Buffer = Buffer()
 Product_Queue = Product()
 
 
