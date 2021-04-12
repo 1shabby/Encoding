@@ -52,20 +52,18 @@ def Info_Screen():
 def Ceaser():
     print("The Ceaser Cipher is a very old encryption algorithm that relies upon shifting each characted by a given value.")
     Input = input("Please Provide a string that you would like to encrypt\n")
-    Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
-    Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
+    Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
+    write_buffer.Convert_To_List('0', Product_Queue.Dim)
     Shift = input(
         "Please provide an integer that you would like to shift by\n")
-    Encoder.Ceaser_Encode(Input_List, Shift, Product_Queue.Dim,
-                          Product_Queue.Rounds, Output_List)
-    print("Ceaser encoded string: " + Encoder.Output)
-    write_buffer.Print_Buffer(Product_Queue.Dim, Output_List)
+    Encoder.Ceaser_Encode(Read_buffer.buffer, write_buffer.buffer, Shift,
+                          Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
+    write_buffer.Print_Buffer(Product_Queue.Dim)
 
     if Product_Queue.Decode == True:
-        Decoder.Ceaser_Decode(
-            Output_List, Shift, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
-        print("Decoded Ceaser encoded string: " + Decoder.Output)
-        write_buffer.Print_Buffer(Product_Queue.Dim, Output_List)
+        Decoder.Ceaser_Decode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim,
+                              Shift, Product_Queue.Rounds, Product_Queue.Round_Count)
+        write_buffer.Print_Buffer(Product_Queue.Dim)
     else:
         print("Please enable decoding to view the decoded version to verify results.")
 
@@ -79,20 +77,19 @@ def Vigenere():
           "text.\n")
 
     Input = input("Please Provide a string that you would like to encrypt\n")
-    Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
-    Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
+    Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
+    write_buffer.Convert_To_List('0', Product_Queue.Dim)
     Key = input("Please enter a key that you would like to use. Ex.'purple'\n")
-    key_length = len(Key)
-    Key_list = Key_buffer.Convert_To_List(Key, Product_Queue.Dim)
-    Encoder.Vigenere_Encode(
-        Input_List, Key_list, Product_Queue.Dim, Product_Queue.Rounds, Output_List, key_length)
-    print("The Vigenere encoded text is: " + Encoder.Output)
+    Key_buffer.input_length = len(Key)
+    Key_buffer.Convert_To_List(Key, Product_Queue.Dim)
+    Encoder.Vigenere_Encode(Read_buffer.buffer, Key_buffer.buffer, write_buffer.buffer,
+                            Key_buffer.input_length, Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
     feedback = input(
         "Would you like to decrypt the encoded string to show that it worked properly?\n")
     if Product_Queue.Decode == True:
-        Decoder.Vigenere_Decode(
-            Input_List, Key_list, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
-        print("Decoded Ceaser encoded string: " + Decoder.Output)
+        Decoder.Vigenere_Decode(Read_buffer.buffer, Key_buffer.buffer, write_buffer.buffer,
+                                Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
+        write_buffer.Print_Buffer(Product_Queue.Dim)
     input("press any key to continue... \n")
 
 
@@ -102,20 +99,19 @@ def Physical_Shift():
           "but instead of changing the char, we just change its position so that all of the\n"
           "chars have an offset of 'shift' places.")
     Input = input("Please Provide a string that you would like to encrypt\n")
-    Input_List = Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
-    Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
-    Read_buffer.Print_Buffer(Product_Queue.Dim, Input_List)
+    Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
+    write_buffer.Convert_To_List('0', Product_Queue.Dim)
+    Read_buffer.Print_Buffer(Product_Queue.Dim)
     Shift = input("Please set the shift value to an integer of your choice. Note that the shift\n"
                   "NEEDS to be smaller than the length of the string!\n")
-    Output_List = Encoder.Physical_Shift_Encode(
-        Input_List, Shift, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
-    write_buffer.Print_Buffer(Product_Queue.Dim, Output_List)
+    Encoder.Physical_Shift_Encode(Read_buffer.buffer, write_buffer.buffer, Shift,
+                                  Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count,)
+    write_buffer.Print_Buffer(Product_Queue.Dim)
     if Product_Queue.Decode == True:
-        Input_List = Output_List
-        Output_List = write_buffer.Convert_To_List('0', Product_Queue.Dim)
-        Output_List = Decoder.Physical_Shift_Decode(
-            Input_List, Shift, Product_Queue.Dim, Product_Queue.Rounds, Output_List)
-        write_buffer.Print_Buffer(Product_Queue.Dim, Output_List)
+        Empty_Buffer.Convert_To_List('0', Product_Queue.Dim)
+        Decoder.Physical_Shift_Decode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim, Shift,
+                                      Product_Queue.Rounds, Product_Queue.Round_Count)
+        write_buffer.Print_Buffer(Product_Queue.Dim)
     else:
         print("Decoding is currently disabled. Please enable if you would like to verify results.\n")
     input("\npress enter to continue... \n")
