@@ -9,6 +9,8 @@ def Welcome_Screen():
 
 def Options():
     print("\n1: info")
+    # Temp option. Eventually will be main interface.
+    print("1.5: Product Menu")
     print("2: Ceaser")
     print("3: Vigenere")
     print("4: Physical shift")
@@ -23,6 +25,11 @@ def Options_Handling():
             "Please enter one of the commands from above to perform the given task.\n")
         if feedback == '1':
             Info_Screen()
+        elif feedback == '1.5':
+            Product_Menu()
+            Product_Input_Handling()
+            Options()
+            Options_Handling()
         elif feedback == '2':
             Ceaser()
             Options()
@@ -102,20 +109,20 @@ def Physical_Shift():
           "suggests. We take an input, then we take in a shift value like the Ceaser cipher\n"
           "but instead of changing the char, we just change its position so that all of the\n"
           "chars have an offset of 'shift' places.")
-    #Input = input("Please Provide a string that you would like to encrypt\n")
-    #Read_buffer.List_To_Buffer(Input, Product_Queue.Dim)
-    #write_buffer.List_To_Buffer('0', Product_Queue.Dim)
-    print("Read Buffer Before Shift ")
-    Read_buffer.Print_Buffer(Product_Queue.Dim)
+    # Get shift value from user.
     Shift = input("Please set the shift value to an integer of your choice. Note that the shift\n"
                   "NEEDS to be smaller than the length of the string!\n")
+    # Copy the previous encoded buffer to the read buffer (if nothing before, then it will be all 0's)
     Read_buffer.Copy_Buffer(write_buffer.buffer)
+    # Set the empty buffer back to all 0's
     Empty_Buffer.List_To_Buffer('0', Product_Queue.Dim)
+    # Copy the empty buffer into the write buffer. This is needed to ensure that we don't have both read and write refrencing the same buffer
     write_buffer.Copy_Buffer(Empty_Buffer.buffer)
+    # Take the read buffer and output the encoded contents into write buffer
     Encoder.Physical_Shift_Encode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim, Shift,
                                   Product_Queue.Rounds, Product_Queue.Round_Count)
-    # Read_buffer.Copy_Buffer(write_buffer.buffer)
     write_buffer.Print_Buffer(Product_Queue.Dim)
+
     if Product_Queue.Decode == True:
         Empty_Buffer.List_To_Buffer('0', Product_Queue.Dim)
         Decoder.Physical_Shift_Decode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim, Shift,
@@ -156,11 +163,19 @@ def Config():
 
 
 def Product_Menu():
-    pass
+    print("Product List Options")
+
+    print("B: Back\n")
 
 
 def Product_Input_Handling():
-    pass
+    check = True
+    while check == True:
+        feedback = input("Please enter one of the commands above.")
+        if feedback.upper() == 'A':
+            print("Add to product list")
+        elif feedback.upper() == 'B':
+            check = False
 
 
 Encoder = Encoder()
