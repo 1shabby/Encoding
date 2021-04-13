@@ -25,9 +25,9 @@ class Encoder:
                 y += 1
             count += 1
 
-        if round_Count < int(Rounds):
-            read_buffer = write_buffer
-            write_buffer = Empty_Buffer(Dim)
+        # if round_Count < int(Rounds):
+        #    read_buffer = write_buffer
+        #    write_buffer = Empty_Buffer(Dim)
 
         self.Buffer = write_buffer
 
@@ -69,9 +69,9 @@ class Encoder:
                 key_x = 0
                 key_y = 0
             key_count += 1
-            if round_Count < int(Rounds):
-                read_buffer = write_buffer
-                write_buffer = Empty_Buffer(Dim)
+        # if round_Count < int(Rounds):
+        #    read_buffer = write_buffer
+        #    write_buffer = Empty_Buffer(Dim)
 
         self.Buffer = write_buffer
 
@@ -141,9 +141,9 @@ class Encoder:
                 write_y += 1
             count += 1
 
-        if round_Count < int(Rounds):
-            read_buffer = write_buffer
-            write_buffer = Empty_Buffer(Dim)
+        # if round_Count < int(Rounds):
+        #    read_buffer = write_buffer
+        #    write_buffer = Empty_Buffer(Dim)
 
     def Columnar_Encode(self):
         return 0
@@ -190,27 +190,47 @@ class Decoder:
 
         self.Buffer = write_buffer
 
-    def Vigenere_Decode(self, read_buffer, Key_buffer, write_buffer, Dim, Rounds, round_Count):
+    def Vigenere_Decode(self, read_buffer, Key_buffer, write_buffer, key_length, Dim, Rounds, round_Count):
         Dim = int(Dim)
         count = 0
-        x = 0
-        y = 0
+        key_count = 0
+
+        read_x = 0
+        read_y = 0
+        key_x = 0
+        key_y = 0
 
         while count < Dim * Dim:
-            write_buffer[x][y] = ord(
-                read_buffer[x][y]) - ord(Key_buffer[x][y])
-            write_buffer[x][y] = chr(write_buffer[x][y])
-            if x < Dim - 1 and y < Dim - 1:
-                y += 1
-            elif x < Dim - 1 and y == Dim - 1:
-                x += 1
-                y = 0
-            elif x == Dim - 1 and y < Dim - 1:
-                y += 1
+            write_buffer[read_x][read_y] = ord(
+                read_buffer[read_x][read_y]) - ord(Key_buffer[key_x][key_y])
+            write_buffer[read_x][read_y] = chr(
+                write_buffer[read_x][read_y])
+            if read_x < Dim - 1 and read_y < Dim - 1:
+                read_y += 1
+            elif read_x < Dim - 1 and read_y == Dim - 1:
+                read_x += 1
+                read_y = 0
+            elif read_x == Dim - 1 and read_y < Dim - 1:
+                read_y += 1
             count += 1
-
+            if key_count < key_length:
+                if key_x < Dim - 1 and key_y < Dim - 1:
+                    key_y += 1
+                elif key_x < Dim - 1 and key_y == Dim - 1:
+                    key_x += 1
+                    key_y = 0
+                elif key_x == Dim - 1 and key_y < Dim - 1:
+                    key_y += 1
+                elif key_x == Dim - 1 and key_y == Dim - 1:
+                    key_x = 0
+                    key_y = 0
+            else:
+                key_x = 0
+                key_y = 0
+            key_count += 1
         if round_Count < int(Rounds):
             read_buffer = write_buffer
+            write_buffer = Empty_Buffer(Dim)
 
         self.Buffer = write_buffer
 
@@ -301,19 +321,19 @@ class Decoder:
 
 
 class Product:
-
     def __init__(self):
         self.Product_List = []
         self.Rounds = 1
         self.Round_Count = 0
+        self.Length = len(self.Product_List)
         self.Decode = True
         self.Dim = 2  # Dimension of the buffers.
 
-    def add(self, encode_name):
-        pass
+    def add(self, cipher_name, Index):
+        self.Product_List.insert(Index, cipher_name)
 
-    def remove(self, encode_name):
-        pass
+    def remove(self, cipher_name, Index):
+        self.Product_List.pop(Index)
 
     def view(self):
         print(self.Product_List)
@@ -323,11 +343,62 @@ class Product:
         self.Rounds = 1
         self.Decode = False
 
+    def run(self, Read_buffer, Write_buffer, Key_buffer, Key_length, Dim, shift_value, Rounds, Round_Count):
+        # This method will run each cipher in the list and if multiple rounds it will handle those opetations for those rounds
+        while self.Round_Count < self.Rounds:
+            for opetation in self.Product_List:
+                if operation == "Ceaser":
+                    # Run Ceaser encode
+                    Encoder.Ceaser_Encode(
+                        Read_buffer, Write_buffer, shift_value, Dim, Rounds, Round_Count)
+
+                elif operation == "Vigenere":
+                    # Run Vigenere encode
+                    Encoder.Vigenere_Encode(
+                        Read_buffer, Key_buffer, Write_buffer, Key_length, Dim, Rounds, Round_Count)
+
+                elif operation == "Physical":
+                    # Run Physical encode
+                    Encoder.Physical_Shift_Encode(
+                        Read_buffer, Write_buffer, Dim, shift_value, Rounds, Round_Count)
+            Round_Count += 1
+        if self.Decode == True:
+            index = len(self.Product_List)
+            self.Round_Count = 0
+            while self.Round_Count < self.Rounds:
+                while index > -1:
+                    if self.Product_List[index] == "Ceaser":
+                        # Run Ceaser decode
+                        Decoder.Ceaser_Decode(
+                            Read_buffer, Write_buffer, shift_value, Dim, Rounds, Round_Count)
+
+                    elif self.Product_List[index] == "Vigenere":
+                        # Run Vigenere decode
+                        Decoder.Vigenere_Decode(
+                            Read_buffer, Key_buffer, Write_buffer, Dim, Rounds, Round_Count)
+
+                    elif self.Product_List[index] == "Physical":
+                        # Run Physical decode
+                        Decoder.Physical_Shift_Decode(
+                            Read_buffer, Write_buffer, Dim, shift_value, Rounds, Round_Count)
+
+                    index -= 1
+                Round_Count += 1
+
     def set_rounds(self, New_Rounds):
         self.Rounds = New_Rounds
 
     def set_dim(self, New_Dim):
         self.Dim = New_Dim
+
+    def set_decode(self, Input):
+        if Input.upper() == "ENABLE":
+            self.Decode = True
+        elif Input.upper() == "DISABLE":
+            self.Decode = False
+        else:
+            print("ERROR: " + Input +
+                  " is not a legal response. Please enter either 'enable' or 'disable'.")
 
 # Responsible for creating the various buffers that we may need.
 
@@ -336,9 +407,15 @@ class Buffer:
     def __init__(self):
         self.buffer = []
         self.input = ""
+        self.output = ""
+        self.input_index = 0
         self.input_length = 0
 
-    def Convert_To_List(self, Input, Dim):
+    def Input_to_List(self, Input):
+        # Convert the input in a list
+        pass
+
+    def List_To_Buffer(self, Input, Dim):
         self.buffer = [[0] * int(Dim)]
         i = 1
         # Create a (Dim x Dim) matrix.
@@ -349,16 +426,17 @@ class Buffer:
         x = 0
         y = 0
         for char in Input:
-            self.buffer[x][y] = char
-            if x < int(Dim) - 1 and y < int(Dim) - 1:
-                y += 1
-            elif x < int(Dim) - 1 and y == int(Dim) - 1:
-                x += 1
-                y = 0
-            elif x == int(Dim) - 1 and y < int(Dim) - 1:
-                y += 1
-            count += 1
-            self.input_length += 1
+            if count < Dim * Dim:
+                self.buffer[x][y] = char
+                if x < int(Dim) - 1 and y < int(Dim) - 1:
+                    y += 1
+                elif x < int(Dim) - 1 and y == int(Dim) - 1:
+                    x += 1
+                    y = 0
+                elif x == int(Dim) - 1 and y < int(Dim) - 1:
+                    y += 1
+                count += 1
+                self.input_length += 1
 
     def Get_Element(self, Index):
         return self.buffer[Index]
@@ -366,12 +444,12 @@ class Buffer:
     def Print_Buffer(self, Dim):
         Dim = int(Dim)
         count = 0
-        Output = ""
+        ReturnStr = ""
         x = 0
         y = 0
         while count < Dim * Dim:
             char = self.buffer[x][y]
-            Output += str(char)
+            ReturnStr += str(char)
             if x < Dim - 1 and y < Dim - 1:
                 y += 1
             elif x < Dim - 1 and y == Dim - 1:
@@ -380,7 +458,7 @@ class Buffer:
             elif x == Dim - 1 and y < Dim - 1:
                 y += 1
             count += 1
-        print("Output: " + Output)
+        print("Output: " + ReturnStr)
 
 
 def Empty_Buffer(Dim):

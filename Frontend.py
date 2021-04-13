@@ -52,12 +52,13 @@ def Info_Screen():
 def Ceaser():
     print("The Ceaser Cipher is a very old encryption algorithm that relies upon shifting each characted by a given value.")
     Input = input("Please Provide a string that you would like to encrypt\n")
-    Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
-    write_buffer.Convert_To_List('0', Product_Queue.Dim)
+    Read_buffer.List_To_Buffer(Input, Product_Queue.Dim)
+    write_buffer.List_To_Buffer('0', Product_Queue.Dim)
     Shift = input(
         "Please provide an integer that you would like to shift by\n")
     Encoder.Ceaser_Encode(Read_buffer.buffer, write_buffer.buffer, Shift,
                           Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
+    Read_buffer.buffer = write_buffer.buffer
     write_buffer.Print_Buffer(Product_Queue.Dim)
 
     if Product_Queue.Decode == True:
@@ -76,20 +77,22 @@ def Vigenere():
           "it onto the ascii value of the input char resulting in a new char which is our encoded\n"
           "text.\n")
 
-    Input = input("Please Provide a string that you would like to encrypt\n")
-    Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
-    write_buffer.Convert_To_List('0', Product_Queue.Dim)
+    #Input = input("Please Provide a string that you would like to encrypt\n")
+    #Read_buffer.List_To_Buffer(Input, Product_Queue.Dim)
+    write_buffer.List_To_Buffer('0', Product_Queue.Dim)
     Key = input("Please enter a key that you would like to use. Ex.'purple'\n")
     Key_buffer.input_length = len(Key)
-    Key_buffer.Convert_To_List(Key, Product_Queue.Dim)
+    Key_buffer.List_To_Buffer(Key, Product_Queue.Dim)
     Encoder.Vigenere_Encode(Read_buffer.buffer, Key_buffer.buffer, write_buffer.buffer,
                             Key_buffer.input_length, Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
-    feedback = input(
-        "Would you like to decrypt the encoded string to show that it worked properly?\n")
+    Read_buffer.buffer = write_buffer.buffer
+    write_buffer.Print_Buffer(Product_Queue.Dim)
+
     if Product_Queue.Decode == True:
-        Decoder.Vigenere_Decode(Read_buffer.buffer, Key_buffer.buffer, write_buffer.buffer,
+        Decoder.Vigenere_Decode(Read_buffer.buffer, Key_buffer.buffer, write_buffer.buffer, Key_buffer.input_length,
                                 Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
         write_buffer.Print_Buffer(Product_Queue.Dim)
+
     input("press enter to continue... \n")
 
 
@@ -98,17 +101,19 @@ def Physical_Shift():
           "suggests. We take an input, then we take in a shift value like the Ceaser cipher\n"
           "but instead of changing the char, we just change its position so that all of the\n"
           "chars have an offset of 'shift' places.")
-    Input = input("Please Provide a string that you would like to encrypt\n")
-    Read_buffer.Convert_To_List(Input, Product_Queue.Dim)
-    write_buffer.Convert_To_List('0', Product_Queue.Dim)
+    #Input = input("Please Provide a string that you would like to encrypt\n")
+    #Read_buffer.List_To_Buffer(Input, Product_Queue.Dim)
+    #write_buffer.List_To_Buffer('0', Product_Queue.Dim)
     Read_buffer.Print_Buffer(Product_Queue.Dim)
     Shift = input("Please set the shift value to an integer of your choice. Note that the shift\n"
                   "NEEDS to be smaller than the length of the string!\n")
-    Encoder.Physical_Shift_Encode(Read_buffer.buffer, write_buffer.buffer, Shift,
-                                  Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count,)
+    Read_buffer.buffer = write_buffer.buffer
+    Encoder.Physical_Shift_Encode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim, Shift,
+                                  Product_Queue.Rounds, Product_Queue.Round_Count)
+    Read_buffer.buffer = write_buffer.buffer
     write_buffer.Print_Buffer(Product_Queue.Dim)
     if Product_Queue.Decode == True:
-        Empty_Buffer.Convert_To_List('0', Product_Queue.Dim)
+        Empty_Buffer.List_To_Buffer('0', Product_Queue.Dim)
         Decoder.Physical_Shift_Decode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim, Shift,
                                       Product_Queue.Rounds, Product_Queue.Round_Count)
         write_buffer.Print_Buffer(Product_Queue.Dim)
@@ -123,8 +128,10 @@ def Config():
         print("Config")
         print("Buffer Dimension: " + str(Product_Queue.Dim))
         print("Rounds: " + str(Product_Queue.Rounds))
+        print("Decode: " + str(Product_Queue.Decode))
         print("\nD: Change Dim")
         print("R: Change rounds")
+        print("M: Change decode mode (t/f)")
         print("B: Back\n")
         feedback = input(
             "Please enter a command from above to modify the settings, or exit the menu.")
@@ -136,6 +143,10 @@ def Config():
             feedback = input(
                 "Please enter an integer rounds that you would like to have a cipher run.\n")
             Product_Queue.set_rounds(feedback)
+        elif feedback.upper() == 'M':
+            feedback = input(
+                "Please enter either 'enable' or 'disable' to enable/ disable decoding.\n")
+            Product_Queue.set_decode(feedback)
         elif feedback.upper() == 'B':
             check = False
 
@@ -146,41 +157,6 @@ def Product_Menu():
 
 def Product_Input_Handling():
     pass
-
-
-def Print_Product_List():
-    for i in Product_Queue.Product_List:
-        print(i)
-
-
-def Run_Product():
-    count = 0
-    # While there are more rounds to complete
-    while Product_Queue.Round_Count < Product_Queue.Rounds:
-        # While there are more operations to do in the product list
-        while count < len(Product_Queue.Product_List):
-            if Product_Queue.Product_List[count] == "Ceaser":
-                Ceaser()
-            elif Product_Queue.Product_List[count] == "Vigenere":
-                Vigenere()
-            elif Product_Queue.Product_List[count] == "Physical":
-                Physical_Shift()
-            count += 1
-
-
-def Add_to_Product(Index, Operation):
-    # This function will add ciphers to the product
-    Product_Queue.Product_List.insert(Index, Operation)
-
-
-def Remove_From_Product(Index):
-    # This will remove cipher from the product
-    Product_Queue.Product_List.pop(Index)
-
-
-def Clear_Product():
-    # This will clear the product queue
-    Product_Queue.Product_List = []
 
 
 Encoder = Encoder()
