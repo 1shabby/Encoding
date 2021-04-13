@@ -67,7 +67,7 @@ def Ceaser():
     else:
         print("Please enable decoding to view the decoded version to verify results.")
 
-    input("press any key to continue... \n")
+    input("press enter to continue... \n")
 
 
 def Vigenere():
@@ -90,7 +90,7 @@ def Vigenere():
         Decoder.Vigenere_Decode(Read_buffer.buffer, Key_buffer.buffer, write_buffer.buffer,
                                 Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
         write_buffer.Print_Buffer(Product_Queue.Dim)
-    input("press any key to continue... \n")
+    input("press enter to continue... \n")
 
 
 def Physical_Shift():
@@ -140,6 +140,49 @@ def Config():
             check = False
 
 
+def Product_Menu():
+    pass
+
+
+def Product_Input_Handling():
+    pass
+
+
+def Print_Product_List():
+    for i in Product_Queue.Product_List:
+        print(i)
+
+
+def Run_Product():
+    count = 0
+    # While there are more rounds to complete
+    while Product_Queue.Round_Count < Product_Queue.Rounds:
+        # While there are more operations to do in the product list
+        while count < len(Product_Queue.Product_List):
+            if Product_Queue.Product_List[count] == "Ceaser":
+                Ceaser()
+            elif Product_Queue.Product_List[count] == "Vigenere":
+                Vigenere()
+            elif Product_Queue.Product_List[count] == "Physical":
+                Physical_Shift()
+            count += 1
+
+
+def Add_to_Product(Index, Operation):
+    # This function will add ciphers to the product
+    Product_Queue.Product_List.insert(Index, Operation)
+
+
+def Remove_From_Product(Index):
+    # This will remove cipher from the product
+    Product_Queue.Product_List.pop(Index)
+
+
+def Clear_Product():
+    # This will clear the product queue
+    Product_Queue.Product_List = []
+
+
 Encoder = Encoder()
 Decoder = Decoder()
 Key_buffer = Buffer()
@@ -147,7 +190,6 @@ Read_buffer = Buffer()
 write_buffer = Buffer()
 Empty_Buffer = Buffer()
 Product_Queue = Product()
-
 
 Welcome_Screen()
 Options()

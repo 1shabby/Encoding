@@ -335,6 +335,7 @@ class Product:
 class Buffer:
     def __init__(self):
         self.buffer = []
+        self.input = ""
         self.input_length = 0
 
     def Convert_To_List(self, Input, Dim):
