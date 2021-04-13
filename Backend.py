@@ -326,7 +326,7 @@ class Product:
         self.Rounds = 1
         self.Round_Count = 0
         self.Length = len(self.Product_List)
-        self.Decode = True
+        self.Decode = False
         self.Dim = 2  # Dimension of the buffers.
 
     def add(self, cipher_name, Index):
@@ -414,6 +414,11 @@ class Buffer:
     def Input_to_List(self, Input):
         # Convert the input in a list
         pass
+
+    def Copy_Buffer(self, Source):
+        # Copy source buffer into current buffer
+        self.buffer = []
+        self.buffer.extend(Source)
 
     def List_To_Buffer(self, Input, Dim):
         self.buffer = [[0] * int(Dim)]

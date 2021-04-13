@@ -58,7 +58,7 @@ def Ceaser():
         "Please provide an integer that you would like to shift by\n")
     Encoder.Ceaser_Encode(Read_buffer.buffer, write_buffer.buffer, Shift,
                           Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
-    Read_buffer.buffer = write_buffer.buffer
+    Read_buffer.Copy_Buffer(write_buffer.buffer)
     write_buffer.Print_Buffer(Product_Queue.Dim)
 
     if Product_Queue.Decode == True:
@@ -79,13 +79,14 @@ def Vigenere():
 
     #Input = input("Please Provide a string that you would like to encrypt\n")
     #Read_buffer.List_To_Buffer(Input, Product_Queue.Dim)
-    write_buffer.List_To_Buffer('0', Product_Queue.Dim)
+    #write_buffer.List_To_Buffer('0', Product_Queue.Dim)
+    write_buffer.Copy_Buffer(Empty_Buffer.buffer)
     Key = input("Please enter a key that you would like to use. Ex.'purple'\n")
     Key_buffer.input_length = len(Key)
     Key_buffer.List_To_Buffer(Key, Product_Queue.Dim)
     Encoder.Vigenere_Encode(Read_buffer.buffer, Key_buffer.buffer, write_buffer.buffer,
                             Key_buffer.input_length, Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
-    Read_buffer.buffer = write_buffer.buffer
+    Read_buffer.Copy_Buffer(write_buffer.buffer)
     write_buffer.Print_Buffer(Product_Queue.Dim)
 
     if Product_Queue.Decode == True:
@@ -104,13 +105,16 @@ def Physical_Shift():
     #Input = input("Please Provide a string that you would like to encrypt\n")
     #Read_buffer.List_To_Buffer(Input, Product_Queue.Dim)
     #write_buffer.List_To_Buffer('0', Product_Queue.Dim)
+    print("Read Buffer Before Shift ")
     Read_buffer.Print_Buffer(Product_Queue.Dim)
     Shift = input("Please set the shift value to an integer of your choice. Note that the shift\n"
                   "NEEDS to be smaller than the length of the string!\n")
-    Read_buffer.buffer = write_buffer.buffer
+    Read_buffer.Copy_Buffer(write_buffer.buffer)
+    Empty_Buffer.List_To_Buffer('0', Product_Queue.Dim)
+    write_buffer.Copy_Buffer(Empty_Buffer.buffer)
     Encoder.Physical_Shift_Encode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim, Shift,
                                   Product_Queue.Rounds, Product_Queue.Round_Count)
-    Read_buffer.buffer = write_buffer.buffer
+    # Read_buffer.Copy_Buffer(write_buffer.buffer)
     write_buffer.Print_Buffer(Product_Queue.Dim)
     if Product_Queue.Decode == True:
         Empty_Buffer.List_To_Buffer('0', Product_Queue.Dim)
