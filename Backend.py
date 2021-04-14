@@ -413,14 +413,16 @@ class Buffer:
 
     def Input_to_List(self, Input):
         # Convert the input in a list
-        pass
+        self.input = ""
+        for char in Input:
+            self.input += char
 
     def Copy_Buffer(self, Source):
         # Copy source buffer into current buffer
         self.buffer = []
         self.buffer.extend(Source)
 
-    def List_To_Buffer(self, Input, Dim):
+    def List_To_Buffer(self, Dim):
         self.buffer = [[0] * int(Dim)]
         i = 1
         # Create a (Dim x Dim) matrix.
@@ -430,7 +432,7 @@ class Buffer:
         count = 0
         x = 0
         y = 0
-        for char in Input:
+        for char in self.input:
             if count < Dim * Dim:
                 self.buffer[x][y] = char
                 if x < int(Dim) - 1 and y < int(Dim) - 1:
