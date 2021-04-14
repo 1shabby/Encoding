@@ -58,7 +58,6 @@ def Info_Screen():
 
 def Ceaser():
     print("The Ceaser Cipher is a very old encryption algorithm that relies upon shifting each characted by a given value.")
-    #Input = input("Please Provide a string that you would like to encrypt\n")
     Read_buffer.List_To_Buffer(Product_Queue.Dim)
     write_buffer.input = "0"
     write_buffer.List_To_Buffer(Product_Queue.Dim)
@@ -79,7 +78,14 @@ def Ceaser():
     if Product_Queue.Decode == True:
         Decoder.Ceaser_Decode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim,
                               Shift, Product_Queue.Rounds, Product_Queue.Round_Count)
-        write_buffer.Print_Buffer(Product_Queue.Dim)
+        # Copy the previous encoded buffer to the read buffer (if nothing before, then it will be all 0's)
+        Read_buffer.Copy_Buffer(write_buffer.buffer)
+        # Set the empty buffer back to all 0's
+        Empty_Buffer.input = "0"
+        Empty_Buffer.List_To_Buffer(Product_Queue.Dim)
+        # Copy the empty buffer into the write buffer. This is needed to ensure that we don't have both read and write refrencing the same buffer
+        write_buffer.Copy_Buffer(Empty_Buffer.buffer)
+        Read_buffer.Print_Buffer(Product_Queue.Dim)
     else:
         print("Please enable decoding to view the decoded version to verify results.")
 
@@ -91,15 +97,20 @@ def Vigenere():
           "we are given a string key and then we take the ascii value of the key char and add\n"
           "it onto the ascii value of the input char resulting in a new char which is our encoded\n"
           "text.\n")
-
-    #Input = input("Please Provide a string that you would like to encrypt\n")
-    #Read_buffer.List_To_Buffer(Input, Product_Queue.Dim)
-    #write_buffer.List_To_Buffer('0', Product_Queue.Dim)
+    # Set Empty buffer back to al 0's
+    Empty_Buffer.input = "0"
+    Empty_Buffer.List_To_Buffer(Product_Queue.Dim)
+    # Copy the empty buffer into write buffer (Ensures that we don't have multiple references to read before encoding)
     write_buffer.Copy_Buffer(Empty_Buffer.buffer)
-    Key = input("Please enter a key that you would like to use. Ex.'purple'\n")
-    Key_buffer.input_length = len(Key)
+    Key_buffer.input = ""
+    Key_buffer.input_length = 0
+    Key = str(input("Please enter a key that you would like to use. Ex.'purple'\n"))
+
     Key_buffer.input = Key
+    # Convert the key into a buffer with the key
     Key_buffer.List_To_Buffer(Product_Queue.Dim)
+    print(str(Key_buffer.input_length))
+    # Do Vigenere Encode
     Encoder.Vigenere_Encode(Read_buffer.buffer, Key_buffer.buffer, write_buffer.buffer,
                             Key_buffer.input_length, Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
     # Copy the previous encoded buffer to the read buffer (if nothing before, then it will be all 0's)
@@ -114,7 +125,14 @@ def Vigenere():
     if Product_Queue.Decode == True:
         Decoder.Vigenere_Decode(Read_buffer.buffer, Key_buffer.buffer, write_buffer.buffer, Key_buffer.input_length,
                                 Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
-        write_buffer.Print_Buffer(Product_Queue.Dim)
+        # Copy the previous encoded buffer to the read buffer (if nothing before, then it will be all 0's)
+        Read_buffer.Copy_Buffer(write_buffer.buffer)
+        # Set the empty buffer back to all 0's
+        Empty_Buffer.input = "0"
+        Empty_Buffer.List_To_Buffer(Product_Queue.Dim)
+        # Copy the empty buffer into the write buffer. This is needed to ensure that we don't have both read and write refrencing the same buffer
+        write_buffer.Copy_Buffer(Empty_Buffer.buffer)
+        Read_buffer.Print_Buffer(Product_Queue.Dim)
 
     input("press enter to continue... \n")
 
@@ -125,8 +143,15 @@ def Physical_Shift():
           "but instead of changing the char, we just change its position so that all of the\n"
           "chars have an offset of 'shift' places.")
     # Get shift value from user.
-    Shift = input("Please set the shift value to an integer of your choice. Note that the shift\n"
-                  "NEEDS to be smaller than the length of the string!\n")
+    check = True
+    while check:
+        Shift = input("Please set the shift value to an integer of your choice. Note that the shift\n"
+                      "NEEDS to be smaller than the length of the string!\n")
+        if int(Shift) <= (Product_Queue.Dim * Product_Queue.Dim) and int(Shift) > -1:
+            check = False
+        else:
+            print("ERROR: Shift value needs to be smaller than " +
+                  str(Product_Queue.Dim * Product_Queue.Dim))
     Empty_Buffer.input = "0"
     Empty_Buffer.List_To_Buffer(Product_Queue.Dim)
     write_buffer.Copy_Buffer(Empty_Buffer.buffer)
@@ -143,11 +168,16 @@ def Physical_Shift():
     Read_buffer.Print_Buffer(Product_Queue.Dim)
 
     if Product_Queue.Decode == True:
-        Empty_Buffer.input = "0"
-        Empty_Buffer.List_To_Buffer(Product_Queue.Dim)
         Decoder.Physical_Shift_Decode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim, Shift,
                                       Product_Queue.Rounds, Product_Queue.Round_Count)
-        write_buffer.Print_Buffer(Product_Queue.Dim)
+        # Copy the previous encoded buffer to the read buffer (if nothing before, then it will be all 0's)
+        Read_buffer.Copy_Buffer(write_buffer.buffer)
+        # Set the empty buffer back to all 0's
+        Empty_Buffer.input = "0"
+        Empty_Buffer.List_To_Buffer(Product_Queue.Dim)
+        # Copy the empty buffer into the write buffer. This is needed to ensure that we don't have both read and write refrencing the same buffer
+        write_buffer.Copy_Buffer(Empty_Buffer.buffer)
+        Read_buffer.Print_Buffer(Product_Queue.Dim)
     else:
         print("Decoding is currently disabled. Please enable if you would like to verify results.\n")
     input("\npress enter to continue... \n")

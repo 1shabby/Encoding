@@ -25,16 +25,12 @@ class Encoder:
                 y += 1
             count += 1
 
-        # if round_Count < int(Rounds):
-        #    read_buffer = write_buffer
-        #    write_buffer = Empty_Buffer(Dim)
-
         self.Buffer = write_buffer
 
     def Vigenere_Encode(self, read_buffer, Key_buffer, write_buffer, key_length, Dim, Rounds, round_Count):
         Dim = int(Dim)
         count = 0
-        key_count = 0
+        key_count = 1
 
         read_x = 0
         read_y = 0
@@ -65,14 +61,11 @@ class Encoder:
                 elif key_x == Dim - 1 and key_y == Dim - 1:
                     key_x = 0
                     key_y = 0
+                key_count += 1
             else:
                 key_x = 0
                 key_y = 0
-            key_count += 1
-        # if round_Count < int(Rounds):
-        #    read_buffer = write_buffer
-        #    write_buffer = Empty_Buffer(Dim)
-
+                key_count = 1
         self.Buffer = write_buffer
 
     def Physical_Shift_Encode(self,  read_buffer, write_buffer, Dim, shift_value, Rounds, round_Count):
@@ -193,7 +186,7 @@ class Decoder:
     def Vigenere_Decode(self, read_buffer, Key_buffer, write_buffer, key_length, Dim, Rounds, round_Count):
         Dim = int(Dim)
         count = 0
-        key_count = 0
+        key_count = 1
 
         read_x = 0
         read_y = 0
@@ -224,13 +217,11 @@ class Decoder:
                 elif key_x == Dim - 1 and key_y == Dim - 1:
                     key_x = 0
                     key_y = 0
+                key_count += 1
             else:
                 key_x = 0
                 key_y = 0
-            key_count += 1
-        if round_Count < int(Rounds):
-            read_buffer = write_buffer
-            write_buffer = Empty_Buffer(Dim)
+                key_count = 1
 
         self.Buffer = write_buffer
 
