@@ -225,16 +225,18 @@ def Product_Menu():
 def Product_Input_Handling():
     check = True
     while check == True:
-        feedback = input("Please enter one of the commands above.")
+        feedback = input("Please enter one of the commands above.\n")
         if feedback.upper() == 'A':
             print("Add to product list")
             Product_Add_Menu()
 
         elif feedback.upper() == 'R':
             print("Remove from list")
+            Product_Remove_Menu()
         elif feedback.upper() == "P":
             print("Product list:")
             Product_Queue.view()
+            Product_Queue.key_view()
         elif feedback.upper() == 'C':
             print("Clear list")
             Product_Queue.clear()
@@ -248,17 +250,28 @@ def Product_Input_Handling():
 def Product_Add_Menu():
     check = True
     index = 0
+    key = "None"
+
     while check:
         feedback = input(
-            "Please enter one of the following: 'Ceaser', 'Vigenere', or 'Physical' and press enter\n")
+            "Please enter one of the following: 'Ceaser', 'Vigenere', or 'Physical', and press enter.\n")
         if feedback.lower() == 'ceaser':
             Operation = 'Ceaser'
+            feedback = input(
+                "Please enter an integer you would like to shift by.\n")
+            key = int(feedback)
             check = False
         elif feedback.lower() == 'vigenere':
             Operation = 'Vigenere'
+            feedback = input(
+                "Plese enter a string you would like to use as a key.\n")
+            key = str(feedback)
             check = False
         elif feedback.lower() == 'physical':
             Operation = 'Physical'
+            feedback = input(
+                "Plese enter an integer less than or equal to the buffer size that you would like to shift by.")
+            key = int(feedback)
             check = False
         else:
             print("ERROR: Please enter one of the above mentioned options!")
@@ -283,6 +296,30 @@ def Product_Add_Menu():
         else:
             print("ERROR: Please enter either yes or no.")
     Product_Queue.add(Operation, index)
+    Product_Queue.key_add(key, index)
+
+
+def Product_Remove_Menu():
+    Check = True
+    index = 0
+    while Check:
+        feedback = input(
+            "Plese enter the index of the operation that you would like to remove\n")
+        if int(feedback) >= 0 and int(feedback) <= Product_Queue.Length - 1:
+            index = int(feedback)
+            print("You have selected to remove cipher: " +
+                  str(Product_Queue.Product_List[index]) + " with the key of: " + str(Product_Queue.Key_List[index]) + "\n")
+            feedback = input(
+                "Are you certain that you want to remove this cipher from the product list?(y/n)\n")
+            if feedback.lower() == 'y' or feedback.lower() == 'yes':
+                Check = False
+                Product_Queue.remove(index)
+        elif int(Product_Queue.Length - 1) == -1:
+            print("ERROR: Unable to remove from an empty buffer.")
+            Check = False
+        else:
+            print("ERROR: Please enter an index within the range of 0 - " +
+                  str(Product_Queue.Length-1) + "\n")
 
 
 Encoder = Encoder()
@@ -293,7 +330,7 @@ write_buffer = Buffer()
 Empty_Buffer = Buffer()
 Product_Queue = Product()
 
-feedback = input("Please enter an input to cipher")
+feedback = input("Please enter an input to cipher.\n")
 Read_buffer.Input_to_List(feedback)
 Read_buffer.List_To_Buffer(Product_Queue.Dim)
 

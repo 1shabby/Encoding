@@ -314,24 +314,37 @@ class Decoder:
 class Product:
     def __init__(self):
         self.Product_List = []
+        self.Key_List = []
+        self.Key_Length = 0
         self.Rounds = 1
         self.Round_Count = 0
         self.Length = len(self.Product_List)
         self.Decode = False
         self.Dim = 2  # Dimension of the buffers.
 
+    def key_add(self, key, Index):
+        self.Key_List.insert(int(Index), key)
+        self.Key_Length += 1
+
     def add(self, cipher_name, Index):
         self.Product_List.insert(int(Index), cipher_name)
         self.Length += 1
 
-    def remove(self, cipher_name, Index):
+    def remove(self, Index):
         self.Product_List.pop(Index)
+        self.Key_List.pop(Index)
+        self.Key_Length -= 1
+        self.Length -= 1
 
     def view(self):
         print(self.Product_List)
 
+    def key_view(self):
+        print(self.Key_List)
+
     def clear(self):
         self.Product_List = []
+        self.Key_List = []
         self.Rounds = 1
         self.Decode = False
 
