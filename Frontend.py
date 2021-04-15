@@ -228,6 +228,7 @@ def Product_Input_Handling():
         feedback = input("Please enter one of the commands above.")
         if feedback.upper() == 'A':
             print("Add to product list")
+            Product_Add_Menu()
 
         elif feedback.upper() == 'R':
             print("Remove from list")
@@ -242,6 +243,46 @@ def Product_Input_Handling():
         elif feedback.upper() == 'B':
             check = False
         Product_Menu()
+
+
+def Product_Add_Menu():
+    check = True
+    index = 0
+    while check:
+        feedback = input(
+            "Please enter one of the following: 'Ceaser', 'Vigenere', or 'Physical' and press enter\n")
+        if feedback.lower() == 'ceaser':
+            Operation = 'Ceaser'
+            check = False
+        elif feedback.lower() == 'vigenere':
+            Operation = 'Vigenere'
+            check = False
+        elif feedback.lower() == 'physical':
+            Operation = 'Physical'
+            check = False
+        else:
+            print("ERROR: Please enter one of the above mentioned options!")
+    check = True
+    while check:
+        feedback = input("Would you like to add " + Operation +
+                         " to the end of the product list?(Y/N)\n")
+        if feedback.lower() == 'y' or feedback.lower() == 'yes':
+            index = Product_Queue.Length
+            check = False
+        elif feedback.lower() == 'n' or feedback.lower() == 'no':
+            while check:
+                feedback = input(
+                    "Please enter an integer from 0 to " + str(Product_Queue.Length) + "\n")
+                if int(feedback) >= 0 and int(feedback) <= Product_Queue.Length:
+                    print("You selected index: " + str(feedback))
+                    index = feedback
+                    check = False
+                elif int(feedback) < 0 or int(feedback) > Product_Queue.Length:
+                    print(
+                        "ERROR: Please enter an integer between the range mentioned above.")
+        else:
+            print("ERROR: Please enter either yes or no.")
+    Product_Queue.add(Operation, index)
 
 
 Encoder = Encoder()

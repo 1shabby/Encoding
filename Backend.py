@@ -321,7 +321,8 @@ class Product:
         self.Dim = 2  # Dimension of the buffers.
 
     def add(self, cipher_name, Index):
-        self.Product_List.insert(Index, cipher_name)
+        self.Product_List.insert(int(Index), cipher_name)
+        self.Length += 1
 
     def remove(self, cipher_name, Index):
         self.Product_List.pop(Index)
