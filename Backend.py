@@ -414,6 +414,7 @@ class Buffer:
         self.buffer.extend(Source)
 
     def List_To_Buffer(self, Dim):
+        Dim = int(Dim)
         self.buffer = [[0] * int(Dim)]
         i = 1
         # Create a (Dim x Dim) matrix.

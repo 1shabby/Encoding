@@ -214,7 +214,11 @@ def Config():
 
 def Product_Menu():
     print("Product List Options")
-
+    print("A: Add a cipher to the product list")
+    print("R: Remove a cipher from the product list")
+    print("P: Print the product list")
+    print("C: Clear the Product list")
+    print("X: Execute the product list")
     print("B: Back\n")
 
 
@@ -224,8 +228,20 @@ def Product_Input_Handling():
         feedback = input("Please enter one of the commands above.")
         if feedback.upper() == 'A':
             print("Add to product list")
+
+        elif feedback.upper() == 'R':
+            print("Remove from list")
+        elif feedback.upper() == "P":
+            print("Product list:")
+            Product_Queue.view()
+        elif feedback.upper() == 'C':
+            print("Clear list")
+            Product_Queue.clear()
+        elif feedback.upper() == 'X':
+            print("Executing list...")
         elif feedback.upper() == 'B':
             check = False
+        Product_Menu()
 
 
 Encoder = Encoder()
