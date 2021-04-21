@@ -270,6 +270,29 @@ def Product_Add_Menu():
             feedback = input(
                 "Plese enter a string you would like to use as a key.\n")
             key = str(feedback)
+            # Need to convert key into a 2d list
+            key_buffer = [[0] * Product_Queue.Dim]
+            i = 1
+            # Create a (Dim x Dim) matrix.
+            while i < int(Product_Queue.Dim):
+                key_buffer.append([0] * int(Product_Queue.Dim))
+                i += 1
+                count = 0
+                x = 0
+                y = 0
+            for char in key:
+                if count < Product_Queue.Dim * Product_Queue.Dim:
+                    key_buffer[x][y] = char
+                    if x < int(Product_Queue.Dim) - 1 and y < int(Product_Queue.Dim) - 1:
+                        y += 1
+                    elif x < int(Product_Queue.Dim) - 1 and y == int(Product_Queue.Dim) - 1:
+                        x += 1
+                        y = 0
+                    elif x == int(Product_Queue.Dim) - 1 and y < int(Product_Queue.Dim) - 1:
+                        y += 1
+                    count += 1
+                    #input_length += 1
+            key = key_buffer
             check = False
         elif feedback.lower() == 'physical':
             Operation = 'Physical'
