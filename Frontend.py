@@ -242,6 +242,7 @@ def Product_Input_Handling():
             Product_Queue.clear()
         elif feedback.upper() == 'X':
             print("Executing list...")
+            Product_Execute()
         elif feedback.upper() == 'B':
             check = False
         Product_Menu()
@@ -322,6 +323,39 @@ def Product_Remove_Menu():
                   str(Product_Queue.Length-1) + "\n")
 
 
+def Product_Execute():
+    index = 0
+    while Product_Queue.Round_Count < Product_Queue.Rounds:
+        for Operation in Product_Queue.Product_List:
+            if Operation == "Ceaser":
+                Encoder.Ceaser_Encode(Read_buffer.buffer, write_buffer.buffer,
+                                      Product_Queue.Key_List[index], Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
+                write_buffer.Print_Buffer(Product_Queue.Dim)
+                Content_Transfer()
+            elif Operation == "Vigenere":
+                Encoder.Vigenere_Encode(Read_buffer.buffer, Product_Queue.Key_List[index], write_buffer.buffer, len(
+                    Product_Queue.Key_List[index]), Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
+                write_buffer.Print_Buffer(Product_Queue.Dim)
+                Content_Transfer()
+            elif Operation == "Physical":
+                Encoder.Physical_Shift_Encode(Read_buffer.buffer, write_buffer.buffer, Product_Queue.Dim,
+                                              Product_Queue.Key_List[index], Product_Queue.Rounds, Product_Queue.Round_Count)
+                write_buffer.Print_Buffer(Product_Queue.Dim)
+                Content_Transfer()
+            index += 1
+        Product_Queue.Round_Count += 1
+
+
+def Content_Transfer():
+    # Copy the previous encoded buffer to the read buffer (if nothing before, then it will be all 0's)
+    Read_buffer.Copy_Buffer(write_buffer.buffer)
+    # Set the empty buffer back to all 0's
+    Empty_Buffer.input = "0"
+    Empty_Buffer.List_To_Buffer(Product_Queue.Dim)
+    # Copy the empty buffer into the write buffer. This is needed to ensure that we don't have both read and write refrencing the same buffer
+    write_buffer.Copy_Buffer(Empty_Buffer.buffer)
+
+
 Encoder = Encoder()
 Decoder = Decoder()
 Key_buffer = Buffer()
@@ -330,7 +364,12 @@ write_buffer = Buffer()
 Empty_Buffer = Buffer()
 Product_Queue = Product()
 
+
+write_buffer.Input_to_List("0")
+write_buffer.List_To_Buffer(Product_Queue.Dim)
+
 feedback = input("Please enter an input to cipher.\n")
+Read_buffer.input = feedback
 Read_buffer.Input_to_List(feedback)
 Read_buffer.List_To_Buffer(Product_Queue.Dim)
 

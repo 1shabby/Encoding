@@ -113,7 +113,7 @@ class Encoder:
         count = 0
         while count < int(shift_value):
             write_buffer[write_x][write_y] = read_buffer[read_x][read_y]
-        # Adjust read buffer x and y vars.
+            # Adjust read buffer x and y vars.
             if read_x < Dim - 1 and read_y < Dim - 1:
                 read_y += 1
             elif read_x < Dim - 1 and read_y == Dim - 1:
@@ -133,10 +133,6 @@ class Encoder:
             elif write_x == Dim - 1 and write_y < Dim - 1:
                 write_y += 1
             count += 1
-
-        # if round_Count < int(Rounds):
-        #    read_buffer = write_buffer
-        #    write_buffer = Empty_Buffer(Dim)
 
     def Columnar_Encode(self):
         return 0
@@ -348,25 +344,29 @@ class Product:
         self.Rounds = 1
         self.Decode = False
 
-    def run(self, Read_buffer, Write_buffer, Key_buffer, Key_length, Dim, shift_value, Rounds, Round_Count):
+    def run(self, Read_buffer, Write_buffer, Key_buffer, Key_length, Dim, Rounds, Round_Count):
         # This method will run each cipher in the list and if multiple rounds it will handle those opetations for those rounds
+        index = 0
         while self.Round_Count < self.Rounds:
             for opetation in self.Product_List:
                 if operation == "Ceaser":
                     # Run Ceaser encode
                     Encoder.Ceaser_Encode(
-                        Read_buffer, Write_buffer, shift_value, Dim, Rounds, Round_Count)
+                        Read_buffer, Write_buffer, self.Key_List[index], Dim, Rounds, Round_Count)
 
                 elif operation == "Vigenere":
                     # Run Vigenere encode
+
                     Encoder.Vigenere_Encode(
                         Read_buffer, Key_buffer, Write_buffer, Key_length, Dim, Rounds, Round_Count)
 
                 elif operation == "Physical":
                     # Run Physical encode
                     Encoder.Physical_Shift_Encode(
-                        Read_buffer, Write_buffer, Dim, shift_value, Rounds, Round_Count)
+                        Read_buffer, Write_buffer, Dim, self.Key_List[index], Rounds, Round_Count)
+                index += 1
             Round_Count += 1
+        index = 0
         if self.Decode == True:
             index = len(self.Product_List)
             self.Round_Count = 0
