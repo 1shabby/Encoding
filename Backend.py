@@ -344,57 +344,11 @@ class Product:
         self.Rounds = 1
         self.Decode = False
 
-    def run(self, Read_buffer, Write_buffer, Key_buffer, Key_length, Dim, Rounds, Round_Count):
-        # This method will run each cipher in the list and if multiple rounds it will handle those opetations for those rounds
-        index = 0
-        while self.Round_Count < self.Rounds:
-            for opetation in self.Product_List:
-                if operation == "Ceaser":
-                    # Run Ceaser encode
-                    Encoder.Ceaser_Encode(
-                        Read_buffer, Write_buffer, self.Key_List[index], Dim, Rounds, Round_Count)
-
-                elif operation == "Vigenere":
-                    # Run Vigenere encode
-
-                    Encoder.Vigenere_Encode(
-                        Read_buffer, Key_buffer, Write_buffer, Key_length, Dim, Rounds, Round_Count)
-
-                elif operation == "Physical":
-                    # Run Physical encode
-                    Encoder.Physical_Shift_Encode(
-                        Read_buffer, Write_buffer, Dim, self.Key_List[index], Rounds, Round_Count)
-                index += 1
-            Round_Count += 1
-        index = 0
-        if self.Decode == True:
-            index = len(self.Product_List)
-            self.Round_Count = 0
-            while self.Round_Count < self.Rounds:
-                while index > -1:
-                    if self.Product_List[index] == "Ceaser":
-                        # Run Ceaser decode
-                        Decoder.Ceaser_Decode(
-                            Read_buffer, Write_buffer, shift_value, Dim, Rounds, Round_Count)
-
-                    elif self.Product_List[index] == "Vigenere":
-                        # Run Vigenere decode
-                        Decoder.Vigenere_Decode(
-                            Read_buffer, Key_buffer, Write_buffer, Dim, Rounds, Round_Count)
-
-                    elif self.Product_List[index] == "Physical":
-                        # Run Physical decode
-                        Decoder.Physical_Shift_Decode(
-                            Read_buffer, Write_buffer, Dim, shift_value, Rounds, Round_Count)
-
-                    index -= 1
-                Round_Count += 1
-
     def set_rounds(self, New_Rounds):
-        self.Rounds = New_Rounds
+        self.Rounds = int(New_Rounds)
 
     def set_dim(self, New_Dim):
-        self.Dim = New_Dim
+        self.Dim = int(New_Dim)
 
     def set_decode(self, Input):
         if Input.upper() == "ENABLE":

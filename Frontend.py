@@ -240,6 +240,9 @@ def Product_Input_Handling():
         elif feedback.upper() == 'C':
             print("Clear list")
             Product_Queue.clear()
+            Read_buffer.Input_to_List(Read_buffer.input)
+            Read_buffer.List_To_Buffer(Product_Queue.Dim)
+            Read_buffer.Print_Buffer(Product_Queue.Dim)
         elif feedback.upper() == 'X':
             print("Executing list...")
             Product_Execute()
@@ -325,7 +328,9 @@ def Product_Remove_Menu():
 
 def Product_Execute():
     index = 0
+    Product_Queue.Round_Count = 0
     while Product_Queue.Round_Count < Product_Queue.Rounds:
+        index = 0
         for Operation in Product_Queue.Product_List:
             if Operation == "Ceaser":
                 Encoder.Ceaser_Encode(Read_buffer.buffer, write_buffer.buffer,
@@ -344,6 +349,8 @@ def Product_Execute():
                 Content_Transfer()
             index += 1
         Product_Queue.Round_Count += 1
+        print("END OF ROUND " + str(Product_Queue.Round_Count) +
+              " OUT OF " + str(Product_Queue.Rounds) + " ROUNDS!\n")
 
 
 def Content_Transfer():
