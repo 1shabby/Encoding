@@ -259,13 +259,13 @@ def Product_Add_Menu():
     while check:
         feedback = input(
             "Please enter one of the following: 'Ceaser', 'Vigenere', or 'Physical', and press enter.\n")
-        if feedback.lower() == 'ceaser':
+        if feedback.lower() == 'ceaser' or feedback.lower() == 'c':
             Operation = 'Ceaser'
             feedback = input(
                 "Please enter an integer you would like to shift by.\n")
             key = int(feedback)
             check = False
-        elif feedback.lower() == 'vigenere':
+        elif feedback.lower() == 'vigenere' or feedback.lower() == 'v':
             Operation = 'Vigenere'
             feedback = input(
                 "Plese enter a string you would like to use as a key.\n")
@@ -294,7 +294,7 @@ def Product_Add_Menu():
                     #input_length += 1
             key = key_buffer
             check = False
-        elif feedback.lower() == 'physical':
+        elif feedback.lower() == 'physical' or feedback.lower() == 'p':
             Operation = 'Physical'
             feedback = input(
                 "Plese enter an integer less than or equal to the buffer size that you would like to shift by.")
