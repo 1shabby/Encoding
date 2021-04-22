@@ -18,18 +18,29 @@ def Config():
     while check == True:
         print("Config")
         print("Buffer Dimension: " + str(Product_Queue.Dim))
+        print("Current Input: " + Read_buffer.input)
         print("Rounds: " + str(Product_Queue.Rounds))
         print("Decode: " + str(Product_Queue.Decode))
         print("\nD: Change Dim")
+        print("I: Change Input string")
         print("R: Change rounds")
         print("M: Change decode mode (t/f)")
         print("B: Back\n")
         feedback = input(
-            "Please enter a command from above to modify the settings, or exit the menu.")
+            "Please enter a command from above to modify the settings, or exit the menu.\n")
         if feedback.upper() == 'D':
             feedback = input(
                 "Please enter a new dimension for the buffers.\n")
             Product_Queue.set_dim(feedback)
+            write_buffer.Input_to_List("0")
+            write_buffer.List_To_Buffer(Product_Queue.Dim)
+            Read_buffer.List_To_Buffer(Product_Queue.Dim)
+        elif feedback.upper() == "I":
+            feedback = input(
+                "Please enter a new input string you would like to encode.\n")
+            Read_buffer.Set_Input(feedback)
+            Read_buffer.Input_to_List(feedback)
+            Read_buffer.List_To_Buffer(Product_Queue.Dim)
         elif feedback.upper() == 'R':
             feedback = input(
                 "Please enter an integer rounds that you would like to have a cipher run.\n")

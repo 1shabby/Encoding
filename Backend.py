@@ -427,6 +427,9 @@ class Buffer:
             count += 1
         print("Output: " + ReturnStr)
 
+    def Set_Input(self, Input):
+        self.input = str(Input)
+
 
 def Empty_Buffer(Dim):
     buffer = []
