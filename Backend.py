@@ -311,10 +311,11 @@ class Product:
     def __init__(self):
         self.Product_List = []
         self.Key_List = []
-        self.Key_Length = 0
+        self.Key_Length_List = []
         self.Rounds = 1
         self.Round_Count = 0
         self.Length = len(self.Product_List)
+        self.Key_Length = 0
         self.Decode = False
         self.Dim = 2  # Dimension of the buffers.
 
@@ -325,10 +326,15 @@ class Product:
     def add(self, cipher_name, Index):
         self.Product_List.insert(int(Index), cipher_name)
         self.Length += 1
+    
+    def key_length_add(self, key_length, Index):
+        self.Key_Length_List.insert(int(Inde), key_length)
+        self.
 
     def remove(self, Index):
         self.Product_List.pop(Index)
         self.Key_List.pop(Index)
+        self.Key_Length_List.pop(Index)
         self.Key_Length -= 1
         self.Length -= 1
 

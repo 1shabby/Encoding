@@ -101,6 +101,7 @@ def Product_Input_Handling():
 def Product_Add_Menu():
     check = True
     index = 0
+    key_length = 0
     key = "None"
 
     while check:
@@ -117,6 +118,7 @@ def Product_Add_Menu():
             feedback = input(
                 "Plese enter a string you would like to use as a key.\n")
             key = str(feedback)
+            key_length = len(key)
             # Need to convert key into a 2d list
             key_buffer = [[0] * Product_Queue.Dim]
             i = 1
@@ -171,6 +173,7 @@ def Product_Add_Menu():
             print("ERROR: Please enter either yes or no.")
     Product_Queue.add(Operation, index)
     Product_Queue.key_add(key, index)
+    Product_Queue.key_length_add(key_length, index)
 
 
 def Product_Remove_Menu():
