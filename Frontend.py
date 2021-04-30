@@ -93,7 +93,7 @@ def Product_Input_Handling():
         elif feedback.upper() == 'S':
             Config()
         elif feedback.upper() == 'I':
-            Info_Screen()
+            exit()
         elif feedback.upper() == 'B':
             check = False
         Product_Menu()
@@ -212,7 +212,8 @@ def Product_Execute():
                 write_buffer.Print_Buffer(Product_Queue.Dim)
                 Content_Transfer()
             elif Operation == "Vigenere":
-                Encoder.Vigenere_Encode(Read_buffer.buffer, Product_Queue.Key_List[index], write_buffer.buffer, Product_Queue.Key_Length_List[index], Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
+                Encoder.Vigenere_Encode(Read_buffer.buffer, Product_Queue.Key_List[index], write_buffer.buffer,
+                                        Product_Queue.Key_Length_List[index], Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
                 write_buffer.Print_Buffer(Product_Queue.Dim)
                 Content_Transfer()
             elif Operation == "Physical":

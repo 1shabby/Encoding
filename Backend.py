@@ -394,27 +394,42 @@ class Buffer:
 
     def List_To_Buffer(self, Dim):
         Dim = int(Dim)
-        self.buffer = [[0] * int(Dim)]
-        i = 1
-        # Create a (Dim x Dim) matrix.
-        while i < int(Dim):
-            self.buffer.append([0] * int(Dim))
-            i += 1
-        count = 0
-        x = 0
-        y = 0
-        for char in self.input:
-            if count < Dim * Dim:
-                self.buffer[x][y] = char
-                if x < int(Dim) - 1 and y < int(Dim) - 1:
-                    y += 1
-                elif x < int(Dim) - 1 and y == int(Dim) - 1:
-                    x += 1
-                    y = 0
-                elif x == int(Dim) - 1 and y < int(Dim) - 1:
-                    y += 1
-                count += 1
-                self.input_length += 1
+        if len(self.input) <= (Dim * Dim):
+            self.buffer = [[0] * int(Dim)]
+            i = 1
+            # Create a (Dim x Dim) matrix.
+            while i < int(Dim):
+                self.buffer.append([0] * int(Dim))
+                i += 1
+            count = 0
+            x = 0
+            y = 0
+            for char in self.input:
+                if count < Dim * Dim:
+                    self.buffer[x][y] = char
+                    if x < int(Dim) - 1 and y < int(Dim) - 1:
+                        y += 1
+                    elif x < int(Dim) - 1 and y == int(Dim) - 1:
+                        x += 1
+                        y = 0
+                    elif x == int(Dim) - 1 and y < int(Dim) - 1:
+                        y += 1
+                    count += 1
+                    self.input_length += 1
+        elif len(self.input) > (Dim * Dim):
+            index = 0
+            self.buffer = []
+            blank_buffer = []
+            i = 0
+            while i < int(Dim):
+                blank_buffer.append([0] * int(Dim))
+                i += 1
+            buffer_count = Dim * Dim
+            while buffer_count < len(self.input):
+                self.buffer.insert(index, blank_buffer)
+                buffer_count += (Dim*Dim)
+                index += 1
+            print(self.buffer)
 
     def Get_Element(self, Index):
         return self.buffer[Index]
