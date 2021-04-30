@@ -420,11 +420,14 @@ class Buffer:
             index = 0
             self.buffer = []
             blank_buffer = []
+            x = 0
+            y = 0
+
             i = 0
             while i < int(Dim):
                 blank_buffer.append([0] * int(Dim))
                 i += 1
-            buffer_count = Dim * Dim
+            buffer_count = 0
             while buffer_count < len(self.input):
                 self.buffer.insert(index, blank_buffer)
                 buffer_count += (Dim*Dim)
