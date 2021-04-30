@@ -80,6 +80,7 @@ def Product_Input_Handling():
             print("Product list:")
             Product_Queue.view()
             Product_Queue.key_view()
+            Product_Queue.Key_Length_View()
         elif feedback.upper() == 'C':
             print("Clear list")
             Product_Queue.clear()
@@ -211,8 +212,7 @@ def Product_Execute():
                 write_buffer.Print_Buffer(Product_Queue.Dim)
                 Content_Transfer()
             elif Operation == "Vigenere":
-                Encoder.Vigenere_Encode(Read_buffer.buffer, Product_Queue.Key_List[index], write_buffer.buffer, len(
-                    Product_Queue.Key_List[index]), Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
+                Encoder.Vigenere_Encode(Read_buffer.buffer, Product_Queue.Key_List[index], write_buffer.buffer, Product_Queue.Key_Length_List[index], Product_Queue.Dim, Product_Queue.Rounds, Product_Queue.Round_Count)
                 write_buffer.Print_Buffer(Product_Queue.Dim)
                 Content_Transfer()
             elif Operation == "Physical":

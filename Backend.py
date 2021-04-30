@@ -326,10 +326,12 @@ class Product:
     def add(self, cipher_name, Index):
         self.Product_List.insert(int(Index), cipher_name)
         self.Length += 1
-    
+
     def key_length_add(self, key_length, Index):
-        self.Key_Length_List.insert(int(Inde), key_length)
-        self.
+        if key_length == "":
+            self.Key_List.insert(int(Index), "N/A")
+        else:
+            self.Key_Length_List.insert(int(Index), key_length)
 
     def remove(self, Index):
         self.Product_List.pop(Index)
@@ -344,11 +346,14 @@ class Product:
     def key_view(self):
         print(self.Key_List)
 
+    def Key_Length_View(self):
+        print(self.Key_Length_List)
+
     def clear(self):
         self.Product_List = []
         self.Key_List = []
-        self.Rounds = 1
-        self.Decode = False
+        self.Key_Length_List = []
+        self.Round_Count = 0
 
     def set_rounds(self, New_Rounds):
         self.Rounds = int(New_Rounds)
